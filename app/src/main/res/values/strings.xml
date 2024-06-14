@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">SiMedit</string>
+    <string name="login_title">Login</string>
+    <string name="login_subtitle">Masukkan username dan password</string>
 </resources>

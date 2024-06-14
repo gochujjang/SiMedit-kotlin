@@ -3,12 +3,14 @@
     <style name="Base.Theme.SiMedit" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:windowBackground">@color/bg</item>
     </style>
 
     <style name="Theme.SiMedit" parent="Base.Theme.SiMedit" />
 
+
 <!--    Text Styles        -->
-    <style name="tv_h1">
+    <style name="tv_h1_30">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">30sp</item>
@@ -16,7 +18,7 @@
         <item name="android:fontFamily">@font/poppins_semibold</item>
     </style>
 
-    <style name="tv_h2">
+    <style name="tv_h2_24">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">24sp</item>
@@ -24,7 +26,7 @@
         <item name="android:fontFamily">@font/poppins_semibold</item>
     </style>
 
-    <style name="tv_h3">
+    <style name="tv_h3_18">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">18sp</item>
@@ -32,7 +34,7 @@
         <item name="android:fontFamily">@font/poppins_semibold</item>
     </style>
 
-    <style name="tv_h4">
+    <style name="tv_h4_16">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">16sp</item>
@@ -40,7 +42,7 @@
         <item name="android:fontFamily">@font/poppins_semibold</item>
     </style>
 
-    <style name="tv_h5">
+    <style name="tv_h5_14">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">14sp</item>
@@ -78,6 +80,17 @@
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:fontFamily">@font/poppins_regular</item>
+    </style>
+
+    <style name="MyTextInputLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="hintAnimationEnabled">false</item>
+        <item name="hintEnabled">false</item>
+        <item name="boxCornerRadiusBottomStart">14dp</item>
+        <item name="boxCornerRadiusBottomEnd">14dp</item>
+        <item name="boxCornerRadiusTopStart">14dp</item>
+        <item name="boxCornerRadiusTopEnd">14dp</item>
     </style>
 
 </resources>
