@@ -82,10 +82,11 @@
         <item name="android:fontFamily">@font/poppins_regular</item>
     </style>
 
-    <style name="MyTextInputLayout">
+    <style name="MyTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">60dp</item>
         <item name="hintAnimationEnabled">false</item>
+        <item name="boxStrokeColor">@color/blue</item>
         <item name="hintEnabled">false</item>
         <item name="boxCornerRadiusBottomStart">14dp</item>
         <item name="boxCornerRadiusBottomEnd">14dp</item>
