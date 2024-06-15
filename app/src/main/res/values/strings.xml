@@ -2,4 +2,19 @@
     <string name="app_name">SiMedit</string>
     <string name="login_title">Login</string>
     <string name="login_subtitle">Masukkan username dan password</string>
+    <string name="username">Username</string>
+    <string name="username_hint">Masukkan username..</string>
+    <string name="password">Password</string>
+    <string name="password_hint">Masukkan password..</string>
+    <string name="account_registration">Registrasi Akun</string>
+    <string name="register_subtitle">Masukkan data yang sesuai</string>
+    <string name="register_title">Register</string>
+    <string name="fullname">Nama Lengkap</string>
+    <string name="fullname_hint">Masukkan nama anda..</string>
+    <string name="email">Email</string>
+    <string name="email_hint">Masukkan email..</string>
+    <string name="register">Daftar</string>
+    <string name="account_login">Login Sekarang</string>
+    <string name="total_amount">Rp 3.080.000</string>
+    <string name="total_amount_title">Total Uang</string>
 </resources>
