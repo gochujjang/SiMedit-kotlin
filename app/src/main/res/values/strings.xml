@@ -17,4 +17,9 @@
     <string name="account_login">Login Sekarang</string>
     <string name="total_amount">Rp 3.080.000</string>
     <string name="total_amount_title">Total Uang</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_history">History</string>
+    <string name="nav_savings">Savings</string>
+    <string name="nav_profile">Profile</string>
+    <string name="cd_add_transaction">Add Transaction</string>
 </resources>

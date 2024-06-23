@@ -4,10 +4,14 @@
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
         <item name="android:windowBackground">@color/bg</item>
+        <item name="android:windowContentOverlay">@null</item>
     </style>
 
     <style name="Theme.SiMedit" parent="Base.Theme.SiMedit" />
 
+    <style name="fab_3_rounded">
+        <item name="cornerSize">50%</item>
+    </style>
 
 <!--    Text Styles        -->
     <style name="tv_h1_30">
