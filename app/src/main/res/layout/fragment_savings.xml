@@ -1,15 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.savings.SavingsFragment">
-
-    <TextView
-        style="@style/tv_h1_30"
+    
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="Savings Page" />
+        android:paddingBottom="200dp">
 
-</FrameLayout>
+        <LinearLayout
+            android:id="@+id/linear_layout_top"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/blue"
+            android:paddingHorizontal="24dp"
+            android:paddingTop="60dp"
+            android:paddingBottom="69dp">
+
+            <TextView
+                style="@style/tv_body_regular_16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Total Savings"
+                android:textColor="@color/white"/>
+
+            <TextView
+                android:id="@+id/tv_total_savings_balance"
+                style="@style/tv_h2_24"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/balance_placeholder"
+                android:textColor="@color/white"/>
+
+            <TextView
+                style="@style/tv_body_regular_16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Total Target"
+                android:textColor="@color/white"/>
+
+            <TextView
+                android:id="@+id/tv_total_target_balance"
+                style="@style/tv_h4_16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/balance_placeholder"
+                android:textColor="@color/white"/>
+        </LinearLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+            app:layout_anchorGravity="bottom"
+            app:layout_anchor="@id/linear_layout_top"
+            android:layout_marginTop="248dp"
+            android:background="@drawable/bg_rounded_top_20">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_add_saving"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginHorizontal="24dp"
+                app:cornerRadius="16dp"
+                android:backgroundTint="@color/blue"
+                android:text="@string/add_savings"
+                style="@style/tv_h4_16"
+                android:textColor="@color/white"
+                app:icon="@drawable/ic_add"
+                app:iconSize="24dp"
+                app:iconGravity="textStart"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_savings"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="20dp"
+                android:nestedScrollingEnabled="false"
+                app:layout_constraintTop_toBottomOf="@id/btn_add_saving"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+
+</androidx.core.widget.NestedScrollView>

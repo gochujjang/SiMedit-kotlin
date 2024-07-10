@@ -1,16 +1,193 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/green_miskin"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.history.HistoryFragment">
 
-    <TextView
-        style="@style/tv_h1_30"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="History Page" />
+        android:layout_height="wrap_content"
+        android:paddingBottom="150dp">
 
-</FrameLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/blue"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingVertical="72dp">
+                <TextView
+                    style="@style/tv_body_medium_16"
+                    android:id="@+id/tv_title_history"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_savings_balance"
+                    android:textColor="@color/white"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <TextView
+                    style="@style/tv_h1_30"
+                    android:id="@+id/tv_total_balance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/total_balance"
+                    android:textColor="@color/white"
+                    app:layout_constraintStart_toStartOf="@id/tv_title_history"
+                    app:layout_constraintEnd_toEndOf="@id/tv_title_history"
+                    app:layout_constraintTop_toBottomOf="@id/tv_title_history"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </FrameLayout>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_income_expenses"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
+            app:cardCornerRadius="16dp"
+            android:background="@color/white"
+            app:cardElevation="10dp"
+            app:layout_constraintStart_toStartOf="@id/guidelineHorizontal"
+            app:layout_constraintEnd_toEndOf="@id/guidelineHorizontal"
+            app:layout_constraintTop_toBottomOf="@id/guidelineHorizontal2">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingVertical="11dp">
+
+                <TextView
+                    style="@style/tv_body_regular_14"
+                    android:id="@+id/tv_title_income"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/income"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/tv_title_expense"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <TextView
+                    style="@style/tv_h4_16"
+                    android:id="@+id/tv_income_balance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/balance_placeholder"
+                    android:textColor="@color/green_miskin"
+                    app:layout_constraintStart_toStartOf="@id/tv_title_income"
+                    app:layout_constraintEnd_toEndOf="@id/tv_title_income"
+                    app:layout_constraintTop_toBottomOf="@id/tv_title_income"/>
+
+                <TextView
+                    style="@style/tv_body_regular_14"
+                    android:id="@+id/tv_title_expense"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/expenses"
+                    app:layout_constraintStart_toEndOf="@id/tv_title_income"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <TextView
+                    style="@style/tv_h4_16"
+                    android:id="@+id/tv_expense_balance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/balance_placeholder"
+                    android:textColor="@color/red"
+                    app:layout_constraintStart_toStartOf="@id/tv_title_expense"
+                    app:layout_constraintEnd_toEndOf="@id/tv_title_expense"
+                    app:layout_constraintTop_toBottomOf="@id/tv_title_expense"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/ed_filter_layout"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            app:hintAnimationEnabled="false"
+            app:hintEnabled="false"
+            app:boxStrokeColor="@color/blue"
+            app:boxCornerRadiusBottomStart="14dp"
+            app:boxCornerRadiusBottomEnd="14dp"
+            app:boxCornerRadiusTopStart="14dp"
+            app:boxCornerRadiusTopEnd="14dp"
+            android:layout_marginTop="30dp"
+            app:layout_constraintTop_toBottomOf="@id/card_income_expenses"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginHorizontal="24dp"
+            android:background="@color/white"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+
+            <AutoCompleteTextView
+                android:id="@+id/auto_complete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                android:hint="@string/choose_sorting"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_history"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="20dp"
+            android:nestedScrollingEnabled="false"
+            app:layout_constraintTop_toBottomOf="@id/ed_filter_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            tools:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:outlineAmbientShadowColor="?attr/colorOnPrimaryContainer"
+            android:outlineSpotShadowColor="?attr/colorOnPrimaryContainer"/>
+
+
+
+<!--        GUIDELINE HORIZONTAL   -->
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineHorizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="64dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintGuide_begin="227dp"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineHorizontal2"
+            android:layout_width="wrap_content"
+            android:layout_height="64dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintGuide_begin="190dp"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

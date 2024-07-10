@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
+    android:layout_marginHorizontal="24dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp"
+    app:cardElevation="7dp"
+    app:cardCornerRadius="16dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="22dp">
+        
+        <TextView
+            android:id="@+id/tv_title_saving"
+            style="@style/tv_h5_14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/title_savings_mini"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/tv_progress_saving"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/tv_h5_14"
+            android:text="@string/progress_savings"
+            android:textColor="@color/green_miskin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_title_saving"
+            app:layout_constraintBottom_toBottomOf="@id/tv_title_saving"/>
+
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/progress_indicator_saving"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            tools:progress="72"
+            app:indicatorColor="@color/green_miskin"
+            app:trackColor="@color/grey"
+            app:indicatorTrackGapSize="0dp"
+            app:trackStopIndicatorSize="0dp"
+            app:trackCornerRadius="10dp"
+            app:trackThickness="5dp"
+            app:layout_constraintTop_toBottomOf="@id/tv_title_saving"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/tv_title_money_collected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/money_collected"
+            style="@style/tv_body_regular_14"
+            app:layout_constraintStart_toStartOf="@id/progress_indicator_saving"
+            app:layout_constraintTop_toBottomOf="@id/progress_indicator_saving"/>
+
+        <TextView
+            android:id="@+id/tv_money_collected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/money_collected_value"
+            style="@style/tv_h5_14"
+            android:textColor="@color/green_miskin"
+            app:layout_constraintTop_toBottomOf="@id/tv_title_money_collected"
+            app:layout_constraintStart_toStartOf="@id/tv_title_money_collected"/>
+
+        <TextView
+            android:id="@+id/tv_title_total_target"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/total_target"
+            style="@style/tv_body_regular_14"
+            app:layout_constraintEnd_toEndOf="@id/progress_indicator_saving"
+            app:layout_constraintTop_toBottomOf="@id/progress_indicator_saving"/>
+
+        <TextView
+            android:id="@+id/tv_total_collected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/total_target_value"
+            android:textColor="@color/grey"
+            style="@style/tv_h5_14"
+            app:layout_constraintTop_toBottomOf="@id/tv_title_total_target"
+            app:layout_constraintEnd_toEndOf="@id/tv_title_total_target"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

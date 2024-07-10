@@ -1,7 +1,9 @@
 package com.codewithre.simedit.ui.main
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -11,6 +13,9 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.codewithre.simedit.R
 import com.codewithre.simedit.databinding.ActivityMainBinding
+import com.codewithre.simedit.ui.ViewModelFactory
+import com.codewithre.simedit.ui.add.transaction.AddTransactionActivity
+import com.codewithre.simedit.ui.login.LoginActivity
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.shape.CornerFamily
@@ -19,6 +24,10 @@ import com.google.android.material.shape.MaterialShapeDrawable
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+
+    private val viewModel by viewModels<MainViewModel> {
+        ViewModelFactory.getInstance(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,11 +45,26 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
+        viewModel.getSession().observe(this) { user ->
+            if (!user.isLogin) {
+                startActivity(Intent(this, LoginActivity::class.java))
+                finish()
+            }
+        }
+
         val navView: BottomNavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment)
         navView.setupWithNavController(navController)
         styleBottomNavBar()
+        setupFab()
 
+    }
+
+    private fun setupFab() {
+        binding.fabAdd.setOnClickListener {
+            val intent = Intent(this, AddTransactionActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun styleBottomNavBar() {

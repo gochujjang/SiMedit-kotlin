@@ -5,12 +5,52 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
         <item name="android:windowBackground">@color/bg</item>
         <item name="android:windowContentOverlay">@null</item>
+
+        <item name="android:ambientShadowAlpha">0.09</item>
+        <item name="android:spotShadowAlpha">0.09</item>
     </style>
 
     <style name="Theme.SiMedit" parent="Base.Theme.SiMedit" />
 
     <style name="fab_3_rounded">
         <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="btn_filled">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingVertical">15dp</item>
+        <item name="android:paddingHorizontal">28dp</item>
+        <item name="backgroundTint">@color/blue</item>
+        <item name="cornerRadius">16dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/poppins_semibold</item>
+    </style>
+
+    <style name="btn_outlined">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingVertical">15dp</item>
+        <item name="android:paddingHorizontal">28dp</item>
+        <item name="backgroundTint">@color/bg</item>
+        <item name="cornerRadius">16dp</item>
+        <item name="strokeWidth">3dp</item>
+        <item name="strokeColor">@color/blue</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/blue</item>
+        <item name="android:fontFamily">@font/poppins_semibold</item>
+    </style>
+
+    <style name="btn_filled_icon">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingVertical">15dp</item>
+        <item name="backgroundTint">@color/blue</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconSize">24dp</item>
+        <item name="cornerRadius">16dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/poppins_semibold</item>
     </style>
 
 <!--    Text Styles        -->
@@ -51,7 +91,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:fontFamily">@font/poppins_semibold</item>
+        <item name="android:fontFamily">@font/poppins_bold</item>
     </style>
 
     <style name="tv_body_regular_16">

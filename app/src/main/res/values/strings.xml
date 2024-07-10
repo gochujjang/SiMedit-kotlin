@@ -1,25 +1,91 @@
 <resources>
     <string name="app_name">SiMedit</string>
     <string name="login_title">Login</string>
-    <string name="login_subtitle">Masukkan username dan password</string>
+    <string name="login_subtitle">Input username and password..</string>
     <string name="username">Username</string>
-    <string name="username_hint">Masukkan username..</string>
+    <string name="username_hint">Fill this field with username..</string>
     <string name="password">Password</string>
-    <string name="password_hint">Masukkan password..</string>
-    <string name="account_registration">Registrasi Akun</string>
-    <string name="register_subtitle">Masukkan data yang sesuai</string>
+    <string name="password_hint">Fill this field with password..</string>
+    <string name="account_registration">Account Registration</string>
+    <string name="register_subtitle">Input the corresponding data</string>
     <string name="register_title">Register</string>
-    <string name="fullname">Nama Lengkap</string>
-    <string name="fullname_hint">Masukkan nama anda..</string>
+    <string name="fullname">Full Name</string>
+    <string name="fullname_hint">Fill this field with your name..</string>
     <string name="email">Email</string>
-    <string name="email_hint">Masukkan email..</string>
-    <string name="register">Daftar</string>
-    <string name="account_login">Login Sekarang</string>
-    <string name="total_amount">Rp 3.080.000</string>
-    <string name="total_amount_title">Total Uang</string>
+    <string name="email_hint">Fill this field with your email..</string>
+    <string name="register">Register</string>
+    <string name="account_login">Login Now</string>
+    <string name="total_amount">Rp xxx.xxx</string>
+    <string name="total_amount_title">Total Balance</string>
     <string name="nav_home">Home</string>
     <string name="nav_history">History</string>
     <string name="nav_savings">Savings</string>
     <string name="nav_profile">Profile</string>
     <string name="cd_add_transaction">Add Transaction</string>
+    <string name="hello">Hello,</string>
+    <string name="user_called">Sobat Medit</string>
+    <string name="latest_transaction">Latest Transaction</string>
+    <string name="title_transaction">Title Transaction</string>
+    <string name="date_transaction">dd-MM-yyyy</string>
+    <string name="value_transaction">Rp xx.xxx</string>
+    <string name="title_savings_mini">Title Savings</string>
+    <string name="progress_savings">%1$d%%</string>
+    <string name="money_collected">Balance Collected</string>
+    <string name="money_collected_value">Rp xxx.xxx</string>
+    <string name="total_target">Total Target</string>
+    <string name="total_target_value">Rp 1.000.000</string>
+    <string name="login_check">Double check your username and password</string>
+    <string name="total_balance">Rp x.xxx.xxx</string>
+    <string name="not_found">No data found</string>
+    <string name="balance_placeholder">Rp xxx.xxx</string>
+    <string name="add_savings">Add Savings</string>
+    <string name="finished">Finished</string>
+    <string name="title_savings_balance">Your remaining balance</string>
+    <string name="income">Income</string>
+    <string name="expenses">Expenses</string>
+    <string name="choose_sorting">Choose sorting type</string>
+    <string name="add_transaction">Add Transaction</string>
+    <string name="balance_hint">Input desired balance</string>
+    <string name="date_hint">yyyy-mm-dd</string>
+    <string name="date_title_transac">Date Transaction</string>
+    <string name="desc_hint">Fill this field with short description</string>
+    <string name="desc_title">Description</string>
+    <string name="add_saving">Add Saving</string>
+    <string name="add_saving_goal">Add Saving Goal</string>
+    <string name="title_saving">Title Saving</string>
+    <string name="update_profile">Update Profile</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="old_password">Old Password</string>
+    <string name="new_password">New Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="reset_password">Reset Password</string>
+
+
+    <string name="faq_q1">What is TrashUp?</string>
+    <string name="faq_a1">TrashUp is a mobile application designed to streamline waste bank operations and enhance community involvement in waste management. It helps users manage their waste effectively by providing features such as user profiles, waste collection schedules, and more.</string>
+    <string name="faq_q2">How do I update my profile information?</string>
+    <string name="faq_a2">To update your profile information:\n
+                            1. Open the app and go to the profile section.\n
+                            2. Click on the "Edit Profile" button.\n
+                            3. Update your name, phone number, date of birth, and address.\n
+                            4. Save your changes.</string>
+    <string name="faq_q3">How do I select my date of birth?</string>
+    <string name="faq_a3">You can select your date of birth using the calendar feature:\n
+
+1. Click on the date of birth field.\n
+2. A calendar will appear. Select your birth date from the calendar.\n
+3. The selected date will be formatted and displayed in the "yyyy-MM-dd" format..</string>
+
+    <string name="faq_q4">What is a waste bank?</string>
+    <string name="faq_a4">A waste bank is a community-driven initiative where residents can deposit their recyclable waste and earn points or money in return. It helps promote recycling and reduces the amount of waste sent to landfills.</string>
+
+    <string name="faq_q5">What types of waste can I deposit?</string>
+    <string name="faq_a5">The types of waste you can deposit include paper, plastic, metal, glass, and electronic waste. Check the app for specific details on accepted materials.</string>
+
+    <string name="faq_q6">What types of waste can I deposit?</string>
+    <string name="faq_a6">The types of waste you can deposit include paper, plastic, metal, glass, and electronic waste. Check the app for specific details on accepted materials.</string>
+
+    <string name="faq_q7">How do I redeem my points or rewards?</string>
+    <string name="faq_a7">You can redeem your points or rewards by going to the "Rewards" section in the app. Select the reward you want to redeem, and follow the instructions provided.</string>
+
 </resources>

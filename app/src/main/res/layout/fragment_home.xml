@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,12 +9,13 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginTop="50dp">
+        android:layout_marginTop="50dp"
+        android:paddingBottom="150dp">
         <LinearLayout
             android:id="@+id/greetings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
             android:orientation="vertical"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -22,25 +23,26 @@
                 style="@style/tv_h3_18"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Hello,"/>
+                android:text="@string/hello"/>
             <TextView
                 style="@style/tv_body_regular_16"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Sobat Medit"/>
+                android:text="@string/user_called"/>
         </LinearLayout>
 
         <ImageView
             android:id="@+id/iv_avatar"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:layout_marginEnd="24dp"
             android:src="@drawable/ic_avatar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/greetings"
             app:layout_constraintBottom_toBottomOf="@id/greetings"/>
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_login"
+            android:id="@+id/card_user"
             style="?attr/materialCardViewElevatedStyle"
             android:layout_width="0dp"
             android:layout_height="220dp"
@@ -67,7 +69,9 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:padding="30dp">
+                    android:paddingHorizontal="30dp"
+                    android:paddingTop="30dp"
+                    android:paddingBottom="20dp">
                     <TextView
                         android:id="@+id/tv_fullname"
                         style="@style/tv_body_medium_18"
@@ -80,13 +84,13 @@
 
                     <TextView
                         android:id="@+id/tv_total_amount"
-                        style="@style/tv_h2_24"
+                        style="@style/tv_h1_30"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="97dp"
                         android:textColor="@color/white"
                         android:text="@string/total_amount"
-                        app:layout_constraintTop_toBottomOf="@id/tv_fullname"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="@id/tv_fullname"
                         app:layout_constraintEnd_toEndOf="@id/tv_fullname"/>
 
@@ -106,6 +110,76 @@
             </FrameLayout>
         </com.google.android.material.card.MaterialCardView>
 
+        <TextView
+            android:id="@+id/tv_latest_transaction"
+            style="@style/tv_h4_16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:text="@string/latest_transaction"
+            app:layout_constraintStart_toStartOf="@+id/card_user"
+            app:layout_constraintTop_toBottomOf="@id/card_user" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_history"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="20dp"
+            android:nestedScrollingEnabled="false"
+            app:layout_constraintTop_toBottomOf="@id/tv_latest_transaction"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/tv_latest_savings"/>
+
+        <TextView
+            android:id="@+id/tv_latest_savings"
+            style="@style/tv_h4_16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:text="Latest Savings"
+            app:layout_constraintStart_toStartOf="@+id/tv_latest_transaction"
+            app:layout_constraintTop_toBottomOf="@id/rv_history" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_savings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="20dp"
+            android:nestedScrollingEnabled="false"
+            app:layout_constraintTop_toBottomOf="@id/tv_latest_savings"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            tools:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:outlineAmbientShadowColor="?attr/colorOnPrimaryContainer"
+            android:outlineSpotShadowColor="?attr/colorOnPrimaryContainer"/>
+
+        <TextView
+            android:id="@+id/tvNotFound"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="@string/not_found"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="gone" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</ScrollView>
+</androidx.core.widget.NestedScrollView>
