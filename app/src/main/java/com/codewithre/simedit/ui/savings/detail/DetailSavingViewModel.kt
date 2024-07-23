@@ -25,6 +25,28 @@ class DetailSavingViewModel(private val repository: UserRepository) : ViewModel(
     private val _transaksiSaving = MutableLiveData<List<TransaksiPortoItem?>?>()
     val transaksiSaving: LiveData<List<TransaksiPortoItem?>?> = _transaksiSaving
 
+    private val _inviteMessage = MutableLiveData<String?>()
+    val inviteMessage: LiveData<String?> = _inviteMessage
+
+    fun inviteFriend(email: String, portoId: Int) {
+        _isLoading.value = true
+        viewModelScope.launch {
+            try {
+                val response = repository.inviteFriend(email, portoId)
+                if (response.success == true) {
+                    _inviteMessage.value = "Successfuly invited"
+                    _isLoading.value = false
+                } else {
+                    _inviteMessage.value = response.message ?: "An error occurred"
+                }
+            } catch (e: Exception) {
+                _inviteMessage.value = e.message ?: "An error occurred"
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
+
     fun getDetailSaving(id: Int) {
         _isLoading.value = true
         viewModelScope.launch {

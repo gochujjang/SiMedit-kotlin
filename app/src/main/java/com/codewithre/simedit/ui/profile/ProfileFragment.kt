@@ -1,6 +1,7 @@
 package com.codewithre.simedit.ui.profile
 
 import android.content.Context
+import android.content.Intent
 import androidx.fragment.app.viewModels
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,6 +11,10 @@ import android.view.ViewGroup
 import com.codewithre.simedit.R
 import com.codewithre.simedit.databinding.FragmentProfileBinding
 import com.codewithre.simedit.ui.ViewModelFactory
+import com.codewithre.simedit.ui.login.LoginActivity
+import com.codewithre.simedit.ui.profile.edit.EditProfileActivity
+import com.codewithre.simedit.ui.profile.faq.FaqActivity
+import com.codewithre.simedit.ui.profile.reset.ResetPassActivity
 
 class ProfileFragment : Fragment() {
 
@@ -34,6 +39,21 @@ class ProfileFragment : Fragment() {
             btnLogout.setOnClickListener {
                 viewModel.logout()
             }
+
+            btnEditProfile.setOnClickListener {
+                val intent = Intent(requireContext(), EditProfileActivity::class.java)
+                startActivity(intent)
+            }
+
+            btnResetPassword.setOnClickListener {
+                val intent = Intent(requireContext(), ResetPassActivity::class.java)
+                startActivity(intent)
+            }
+
+            btnHelpCenter.setOnClickListener {
+                val intent = Intent(requireContext(), FaqActivity::class.java)
+                startActivity(intent)
+            }
         }
 
         getUserData()
@@ -49,6 +69,12 @@ class ProfileFragment : Fragment() {
                 binding.tvUserName.text = userData.name
             }
         }
+        viewModel.getUserData()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
         viewModel.getUserData()
     }
 

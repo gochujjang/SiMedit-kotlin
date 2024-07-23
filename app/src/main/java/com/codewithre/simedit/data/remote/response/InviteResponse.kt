@@ -2,13 +2,13 @@ package com.codewithre.simedit.data.remote.response
 
 import com.google.gson.annotations.SerializedName
 
-data class AddTransacSavingResponse(
+data class InviteResponse(
 
 	@field:SerializedName("code")
 	val code: Int? = null,
 
 	@field:SerializedName("data")
-	val data: TransacSavingData? = null,
+	val data: InviteData? = null,
 
 	@field:SerializedName("success")
 	val success: Boolean? = null,
@@ -17,16 +17,13 @@ data class AddTransacSavingResponse(
 	val message: String? = null
 )
 
-data class TransacSavingData(
+data class InviteData(
 
-	@field:SerializedName("keterangan")
-	val keterangan: String? = null,
+	@field:SerializedName("user_id")
+	val userId: Int? = null,
 
-	@field:SerializedName("nominal")
-	val nominal: String? = null,
-
-	@field:SerializedName("portomember_id")
-	val portomemberId: String? = null,
+	@field:SerializedName("portofolio_id")
+	val portofolioId: String? = null,
 
 	@field:SerializedName("status")
 	val status: String? = null

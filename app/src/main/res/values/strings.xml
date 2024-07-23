@@ -87,5 +87,8 @@
 
     <string name="faq_q7">How do I redeem my points or rewards?</string>
     <string name="faq_a7">You can redeem your points or rewards by going to the "Rewards" section in the app. Select the reward you want to redeem, and follow the instructions provided.</string>
+    <string name="saving_plan_hint">Choose saving plan</string>
+    <string name="saving_transaction_title">Add Saving Transaction</string>
+    <string name="saving_plan_title">Saving Plan</string>
 
 </resources>

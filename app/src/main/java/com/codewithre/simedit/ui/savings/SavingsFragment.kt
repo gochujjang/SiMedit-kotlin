@@ -16,6 +16,7 @@ import com.codewithre.simedit.databinding.FragmentSavingsBinding
 import com.codewithre.simedit.ui.ViewModelFactory
 import com.codewithre.simedit.ui.add.saving.AddSavingActivity
 import com.codewithre.simedit.utils.formatCurrency
+import com.codewithre.simedit.utils.formatShortCurrency
 
 class SavingsFragment : Fragment() {
 
@@ -49,6 +50,12 @@ class SavingsFragment : Fragment() {
         addSavingGoal()
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        viewModel.getSaving()
+    }
+
     private fun addSavingGoal() {
         binding.btnAddSaving.setOnClickListener {
             val intent = Intent(requireContext(), AddSavingActivity::class.java)
@@ -59,13 +66,17 @@ class SavingsFragment : Fragment() {
     private fun setBalance() {
         viewModel.apply {
             totalSaving.observe(viewLifecycleOwner) {
-                if (it != null) {
-                    binding.tvTotalSavingsBalance.text = formatCurrency(it.data)
+                if (it?.data?.totalTerkumpul != null) {
+                    binding.tvTotalSavingsBalance.text = formatCurrency(it.data.totalTerkumpul.toInt())
+                } else {
+                    binding.tvTotalSavingsBalance.text = formatCurrency(0)
                 }
             }
             totalSaveTarget.observe(viewLifecycleOwner) {
-                if (it != null) {
-                    binding.tvTotalTargetBalance.text = formatCurrency(it.data)
+                if (it?.data?.totalTarget != null) {
+                    binding.tvTotalTargetBalance.text = formatShortCurrency(it.data.totalTarget.toInt())
+                } else {
+                    binding.tvTotalTargetBalance.text = formatShortCurrency(0)
                 }
             }
         }

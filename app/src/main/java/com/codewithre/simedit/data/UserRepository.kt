@@ -7,14 +7,22 @@ import com.codewithre.simedit.data.remote.response.AddTransacResponse
 import com.codewithre.simedit.data.remote.response.AddTransacSavingResponse
 import com.codewithre.simedit.data.remote.response.BalanceResponse
 import com.codewithre.simedit.data.remote.response.DetailSavingResponse
+import com.codewithre.simedit.data.remote.response.DropdownSavingResponse
 import com.codewithre.simedit.data.remote.response.HistoryResponse
+import com.codewithre.simedit.data.remote.response.InviteResponse
+import com.codewithre.simedit.data.remote.response.LogoutResponse
+import com.codewithre.simedit.data.remote.response.ResetPassResponse
 import com.codewithre.simedit.data.remote.response.SavingLatestResponse
 import com.codewithre.simedit.data.remote.response.SavingResponse
+import com.codewithre.simedit.data.remote.response.TotalTargetResponse
+import com.codewithre.simedit.data.remote.response.TotalTerkumpulResponse
+import com.codewithre.simedit.data.remote.response.UpdateProfileResponse
 import com.codewithre.simedit.data.remote.response.UserResponse
 import com.codewithre.simedit.data.remote.retrofit.ApiService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
+import retrofit2.http.Field
 
 class UserRepository private constructor(
     private val apiService: ApiService,
@@ -25,7 +33,10 @@ class UserRepository private constructor(
     }
 
     suspend fun logout() {
-        userPreference.logout()
+        return withContext(Dispatchers.IO) {
+//            apiService.logout()
+            userPreference.logout()
+        }
     }
 
     suspend fun getHistory() : HistoryResponse {
@@ -52,13 +63,13 @@ class UserRepository private constructor(
         }
     }
 
-    suspend fun getTotalSave() : BalanceResponse {
+    suspend fun getTotalSave() : TotalTerkumpulResponse {
         return withContext(Dispatchers.IO) {
             apiService.getTotalSave()
         }
     }
 
-    suspend fun getTotalSaveTarget() : BalanceResponse {
+    suspend fun getTotalSaveTarget() : TotalTargetResponse {
         return withContext(Dispatchers.IO) {
             apiService.getTotalSaveTarget()
         }
@@ -76,9 +87,9 @@ class UserRepository private constructor(
         }
     }
 
-    suspend fun getSavingLatest() : SavingLatestResponse {
+    suspend fun getDropdownSaving() : DropdownSavingResponse {
         return withContext(Dispatchers.IO) {
-            apiService.getSavingLatest()
+            apiService.getDropdownSaving()
         }
     }
 
@@ -89,8 +100,8 @@ class UserRepository private constructor(
     }
     suspend fun addTransactionSaving(
         status : String,
-        nominal : String,
-        porto_id : Int,
+        nominal : Int,
+        portomember_id : Int,
         keterangan : String
     ) : AddTransacSavingResponse {
         return withContext(Dispatchers.IO) {
@@ -98,7 +109,7 @@ class UserRepository private constructor(
                 status,
                 nominal,
                 keterangan,
-                porto_id
+                portomember_id
             )
         }
     }
@@ -127,6 +138,46 @@ class UserRepository private constructor(
             apiService.addSaving(
                 title,
                 target
+            )
+        }
+    }
+
+    suspend fun updateProfile(
+        name: String,
+        username: String,
+        email: String,
+    ) : UpdateProfileResponse {
+        return withContext(Dispatchers.IO) {
+            apiService.updateProfile(
+                name,
+                username,
+                email
+            )
+        }
+    }
+
+    suspend fun resetPass(
+        currentPass: String,
+        password: String,
+        passConfirm: String,
+    ) : ResetPassResponse {
+        return withContext(Dispatchers.IO) {
+            apiService.resetPass(
+                currentPass,
+                password,
+                passConfirm
+            )
+        }
+    }
+
+    suspend fun inviteFriend(
+        email : String,
+        portoId : Int
+    ) : InviteResponse {
+        return withContext(Dispatchers.IO) {
+            apiService.inviteFriend(
+                email,
+                portoId
             )
         }
     }

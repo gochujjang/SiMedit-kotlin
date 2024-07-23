@@ -6,6 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.NavController
+import androidx.navigation.NavOptions
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.codewithre.simedit.R
 import com.codewithre.simedit.adapter.HistoryAdapter
@@ -32,6 +35,7 @@ class HomeFragment : Fragment() {
     private val savingViewModel: SavingsViewModel by viewModels {
         ViewModelFactory.getInstance(requireContext())
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -71,10 +75,28 @@ class HomeFragment : Fragment() {
             rvHistory.setHasFixedSize(true)
             rvSavings.setHasFixedSize(true)
         }
-
+        avatarBtn()
         setLoading()
         setBalance()
         setUserData()
+    }
+
+    private fun avatarBtn() {
+        binding.ivAvatar.setOnClickListener {
+            val navOption = NavOptions.Builder()
+                .setPopUpTo(R.id.navigation_home, true)
+                .build()
+            findNavController().navigate(R.id.navigation_profile, null, navOption)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        viewModel.getTotalBalance()
+        viewModel.getUserData()
+        historyViewModel.getHistory()
+        savingViewModel.getSaving()
     }
 
     private fun setLoading() {

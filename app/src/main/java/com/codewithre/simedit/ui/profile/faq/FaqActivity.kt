@@ -30,6 +30,13 @@ class FaqActivity : AppCompatActivity() {
 
         addDataToList()
         setupRecyclerView()
+        setBackBtn()
+    }
+
+    private fun setBackBtn() {
+        binding.btnBack.setOnClickListener {
+            finish()
+        }
     }
 
     private fun setupRecyclerView() {

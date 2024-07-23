@@ -19,27 +19,42 @@ data class SavingResponse(
 
 data class SavingItem(
 
+	@field:SerializedName("portofolio_id")
+	val portofolioId: Int? = null,
+
+	@field:SerializedName("created_at")
+	val createdAt: String? = null,
+
+	@field:SerializedName("title")
+	val title: String? = null,
+
+	@field:SerializedName("target")
+	val target: Int? = null,
+
+	@field:SerializedName("persentase")
+	val persentase: Int? = null,
+
 	@field:SerializedName("updated_at")
 	val updatedAt: String? = null,
 
 	@field:SerializedName("user_id")
 	val userId: Int? = null,
 
-	@field:SerializedName("created_at")
-	val createdAt: String? = null,
+	@field:SerializedName("name")
+	val name: String? = null,
 
 	@field:SerializedName("id")
 	val id: Int? = null,
 
-	@field:SerializedName("title")
-	val title: String? = null,
-
 	@field:SerializedName("terkumpul")
 	val terkumpul: Int? = null,
 
-	@field:SerializedName("target")
-	val target: Int? = null,
+	@field:SerializedName("email")
+	val email: String? = null,
 
-	@field:SerializedName("persentase")
-	val persentase: Int? = null
+	@field:SerializedName("status")
+	val status: String? = null,
+
+	@field:SerializedName("username")
+	val username: String? = null
 )

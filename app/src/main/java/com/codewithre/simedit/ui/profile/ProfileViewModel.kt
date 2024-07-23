@@ -14,8 +14,14 @@ class ProfileViewModel(private val repository: UserRepository) : ViewModel() {
 
     private val _userData = MutableLiveData<UserResponse>()
     val userData: LiveData<UserResponse> = _userData
+
+    private val _message = MutableLiveData<String>()
+    val message: LiveData<String> = _message
+
     fun logout() {
         viewModelScope.launch {
+//            val response = repository.logout()
+//            _message.value = response.toString()
             repository.logout()
         }
     }

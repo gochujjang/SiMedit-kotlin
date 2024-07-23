@@ -1,6 +1,7 @@
 package com.codewithre.simedit.ui.profile.edit
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -22,10 +23,66 @@ class EditProfileActivity : AppCompatActivity() {
         binding = ActivityEditProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+        binding.apply {
+            btnBack.setOnClickListener {
+                finish()
+            }
         }
+
+        getUserData()
+        updateProfileBtn()
+        errorMsg()
+    }
+
+    private fun errorMsg() {
+        viewModel.errorMessage.observe(this) {
+            if (it != null) {
+                showToast(it)
+            }
+        }
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun updateProfileBtn() {
+        binding.apply {
+            btnUpdateProfile.setOnClickListener {
+                val name = edFullname.text.toString()
+                val username = edUsername.text.toString()
+                val email = edEmail.text.toString()
+
+                if (name.isEmpty()) {
+                    edFullname.error = "Name can't be empty"
+                    return@setOnClickListener
+                } else if (username.isEmpty()) {
+                    edUsername.error = "Username can't be empty"
+                    return@setOnClickListener
+                } else if (email.isEmpty()) {
+                    edEmail.error = "Email can't be empty"
+                    return@setOnClickListener
+                } else {
+                    edFullname.error = null
+                    edUsername.error = null
+                    edEmail.error = null
+                }
+
+                viewModel.updateProfile(name, username, email)
+            }
+        }
+        }
+
+    private fun getUserData() {
+        viewModel.userData.observe(this) {
+            if (it != null) {
+                binding.apply {
+                    edFullname.setText(it.name)
+                    edUsername.setText(it.username)
+                    edEmail.setText(it.email)
+                }
+            }
+        }
+        viewModel.getUserData()
     }
 }

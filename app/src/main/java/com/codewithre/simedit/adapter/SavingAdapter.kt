@@ -31,7 +31,7 @@ class SavingAdapter : ListAdapter<SavingItem, SavingAdapter.MyViewHolder>(DIFF_C
                 root.setOnClickListener {
                     val context = it.context
                     val intent = Intent(context, DetailSavingActivity::class.java).apply {
-                        putExtra(EXTRA_ID, item.id)
+                        putExtra(EXTRA_ID, item.portofolioId)
                     }
                     context.startActivity(intent)
                 }

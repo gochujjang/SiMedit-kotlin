@@ -9,18 +9,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.codewithre.simedit.R
 import com.codewithre.simedit.data.remote.response.TransaksiPortoItem
 import com.codewithre.simedit.databinding.ItemTransactionBinding
+import com.codewithre.simedit.databinding.ItemTransactionsavingBinding
 import com.codewithre.simedit.utils.formatCurrency
 import com.codewithre.simedit.utils.formatDate
 
 class DetailSavingAdapter : ListAdapter<TransaksiPortoItem, DetailSavingAdapter.MyViewHolder>(DIFF_CALLBACK) {
 
-    class MyViewHolder(private val binding: ItemTransactionBinding) : RecyclerView.ViewHolder(binding.root) {
+    class MyViewHolder(private val binding: ItemTransactionsavingBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: TransaksiPortoItem) {
             binding.apply {
                 tvTitleTransac.text = item.keterangan
                 tvValueTransac.text = formatCurrency(item.nominal)
                 val formattedDate = formatDate(item.createdAt.toString())
                 tvDateTransac.text = formattedDate
+                tvUserName.text = item.user?.name ?: "Null"
 
                 if (item.status == "pemasukan") {
                     binding.apply {
@@ -44,7 +46,7 @@ class DetailSavingAdapter : ListAdapter<TransaksiPortoItem, DetailSavingAdapter.
         parent: ViewGroup,
         viewType: Int
     ): MyViewHolder {
-        val binding = ItemTransactionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemTransactionsavingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MyViewHolder(binding)
     }
 

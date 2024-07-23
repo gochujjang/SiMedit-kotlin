@@ -1,6 +1,7 @@
 package com.codewithre.simedit.ui.register
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -34,6 +35,7 @@ class RegisterActivity : AppCompatActivity() {
         viewModel.registerResult.observe(this) { registerResult ->
             if (registerResult.data != null) {
                 showToast("Register Successfully")
+                finish()
             } else {
                 showToast("Register failed")
             }
@@ -42,6 +44,7 @@ class RegisterActivity : AppCompatActivity() {
         viewModel.errorResponse.observe(this) { errorResponse ->
             if (errorResponse != null) {
                 showToast(errorResponse.toString())
+                Log.d("RegisterActivity", "Error: $errorResponse")
             }
         }
 
@@ -78,6 +81,7 @@ class RegisterActivity : AppCompatActivity() {
                     email,
                     password
                 )
+
             }
         }
 

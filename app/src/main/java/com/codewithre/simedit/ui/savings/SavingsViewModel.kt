@@ -7,6 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.codewithre.simedit.data.UserRepository
 import com.codewithre.simedit.data.remote.response.BalanceResponse
 import com.codewithre.simedit.data.remote.response.SavingItem
+import com.codewithre.simedit.data.remote.response.TotalTargetResponse
+import com.codewithre.simedit.data.remote.response.TotalTerkumpulResponse
 import kotlinx.coroutines.launch
 
 class SavingsViewModel(private val repository: UserRepository) : ViewModel() {
@@ -19,11 +21,11 @@ class SavingsViewModel(private val repository: UserRepository) : ViewModel() {
     private val _errorMessage = MutableLiveData<String>()
     val errorMessage: LiveData<String> = _errorMessage
 
-    private val _totalSaving = MutableLiveData<BalanceResponse?>()
-    val totalSaving: LiveData<BalanceResponse?> = _totalSaving
+    private val _totalSaving = MutableLiveData<TotalTerkumpulResponse?>()
+    val totalSaving: LiveData<TotalTerkumpulResponse?> = _totalSaving
 
-    private val _totalSaveTarget = MutableLiveData<BalanceResponse?>()
-    val totalSaveTarget: LiveData<BalanceResponse?> = _totalSaveTarget
+    private val _totalSaveTarget = MutableLiveData<TotalTargetResponse?>()
+    val totalSaveTarget: LiveData<TotalTargetResponse?> = _totalSaveTarget
 
     fun getSaving() {
         _isLoading.value = true

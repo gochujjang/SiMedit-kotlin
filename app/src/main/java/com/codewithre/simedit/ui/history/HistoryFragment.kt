@@ -61,6 +61,17 @@ class HistoryFragment : Fragment() {
         setBalance()
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        viewModel.apply {
+            getHistory()
+            getTotalIncome()
+            getTotalExpense()
+            getTotalBalance()
+        }
+    }
+
     private fun setBalance() {
         viewModel.apply {
             totalBalance.observe(viewLifecycleOwner) { totalBalance ->

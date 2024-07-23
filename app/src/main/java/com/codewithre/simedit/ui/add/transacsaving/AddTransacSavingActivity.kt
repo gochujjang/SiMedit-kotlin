@@ -1,8 +1,8 @@
-package com.codewithre.simedit.ui.add.transaction
+package com.codewithre.simedit.ui.add.transacsaving
 
 import android.os.Bundle
-import android.text.InputType
 import android.util.Log
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -11,78 +11,60 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.codewithre.simedit.R
-import com.codewithre.simedit.databinding.ActivityAddTransactionBinding
+import com.codewithre.simedit.databinding.ActivityAddTransacSavingBinding
 import com.codewithre.simedit.ui.ViewModelFactory
+import com.codewithre.simedit.ui.savings.SavingsFragment
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.datepicker.MaterialDatePicker
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class AddTransactionActivity : AppCompatActivity() {
-
-    private lateinit var binding: ActivityAddTransactionBinding
-    private val viewModel: AddTransactionViewModel by viewModels<AddTransactionViewModel> {
+class AddTransacSavingActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityAddTransacSavingBinding
+    private val viewModel: AddTransacSavingViewModel by viewModels<AddTransacSavingViewModel> {
         ViewModelFactory.getInstance(this)
     }
     private val sDF = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     private var typeChecked : String = "pemasukan"
-
+    private var id : Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        binding = ActivityAddTransactionBinding.inflate(layoutInflater)
+        binding = ActivityAddTransacSavingBinding.inflate(layoutInflater)
         setContentView(binding.root)
         supportActionBar?.hide()
 
+        id = intent.getIntExtra(SavingsFragment.EXTRA_ID, 0)
+        Log.d("COY AddTransacSavingActivity", "onCreate: $id")
+
         setupToggleButtonGroup()
         setupBackButton()
-        setupDatePicker()
-        addTransaction()
+        setAddTransaction()
     }
 
-    private fun addTransaction() {
+    private fun setAddTransaction() {
         binding.apply {
             btnAddTransaction.setOnClickListener {
                 val typeTransac = typeChecked
-                val balance = edBalance.value
-                val dateTransac = edDate.text.toString()
+                val balance = edBalance.value.toInt()
                 val desc = edDesc.text
+                val portoId = id
 
-                if (balance.toInt() == 0) {
+                if (balance == 0) {
                     edBalance.error = "Balance can't be 0, please enter balance amount"
                     return@setOnClickListener
                 } else if (desc?.isEmpty() == true) {
                     edDesc.error = "Description can't be empty"
                     return@setOnClickListener
                 } else {
-                    Log.d("COY AddTransactionActivity", "tipe transac: $typeTransac \n balance: $balance \n dateTransac: $dateTransac \n desc: $desc")
-                    viewModel.addTransaction(
+                    Log.d("COY FIELD", "setAddTransaction: $typeTransac balance : $balance desc : $desc porto : $portoId")
+                    viewModel.addSavingTransaction(
                         typeTransac,
-                        balance.toString(),
-                        dateTransac,
-                        desc.toString())
+                        balance,
+                        portoId,
+                        desc.toString(),
+                    )
                     finish()
-                }
-            }
-        }
-    }
-
-    private fun setupDatePicker() {
-        binding.apply {
-            edDate.setText(sDF.format(System.currentTimeMillis()))
-
-            edDate.setInputType(InputType.TYPE_NULL)
-            edDate.setOnClickListener {
-                val datePickerBuilder = MaterialDatePicker.Builder.datePicker()
-                    .setTitleText("Select Date")
-                    .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
-
-                val datePicker = datePickerBuilder.build()
-                datePicker.show(supportFragmentManager, "DatePicker")
-                datePicker.addOnPositiveButtonClickListener {
-                    val selectedDate = sDF.format(it)
-                    edDate.setText(selectedDate)
                 }
             }
         }
@@ -139,5 +121,3 @@ class AddTransactionActivity : AppCompatActivity() {
         }
     }
 }
-
-
