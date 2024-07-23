@@ -10,6 +10,8 @@ import com.codewithre.simedit.data.remote.response.AddTransacSavingResponse
 import com.codewithre.simedit.data.remote.response.DropdownItem
 import com.codewithre.simedit.data.remote.response.DropdownSavingResponse
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 
 class AddTransacSavingViewModel(private val repository: UserRepository) : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
@@ -22,10 +24,12 @@ class AddTransacSavingViewModel(private val repository: UserRepository) : ViewMo
     val errorMessage: LiveData<String> = _errorMessage
 
     fun addSavingTransaction(
-        status : String,
-        nominal : Int,
-        portomember_id : Int,
-        keterangan : String
+        status : RequestBody,
+        nominal : RequestBody,
+        portomember_id : RequestBody,
+        keterangan : RequestBody,
+        description : RequestBody,
+        photo : MultipartBody.Part
     ) {
         _isLoading.value = true
         viewModelScope.launch {
@@ -34,7 +38,9 @@ class AddTransacSavingViewModel(private val repository: UserRepository) : ViewMo
                     status,
                     nominal,
                     portomember_id,
-                    keterangan
+                    keterangan,
+                    description,
+                    photo,
                 )
                 if (response.success == true) {
                     _addTransactionResult.value = response

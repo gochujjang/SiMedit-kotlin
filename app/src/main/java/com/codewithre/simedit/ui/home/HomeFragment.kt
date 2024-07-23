@@ -2,10 +2,12 @@ package com.codewithre.simedit.ui.home
 
 import androidx.fragment.app.viewModels
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
@@ -52,17 +54,23 @@ class HomeFragment : Fragment() {
 
         historyViewModel.listHistory.observe(viewLifecycleOwner) {listHistory ->
             if (listHistory != null) {
-                setLatestHistory(listHistory)
-            } else {
-                showNotFound(true)
+                if (listHistory.isEmpty()) {
+                    showNotFound(true)
+                } else {
+                    showNotFound(false)
+                    setLatestHistory(listHistory)
+                }
             }
         }
 
         savingViewModel.listSaving.observe(viewLifecycleOwner) {listSaving ->
             if (listSaving != null) {
-                setLatestSaving(listSaving)
-            } else {
-                showNotFound(true)
+                if (listSaving.isEmpty()) {
+                    showNotFoundSaving(true)
+                } else {
+                    showNotFoundSaving(false)
+                    setLatestSaving(listSaving)
+                }
             }
         }
         savingViewModel.getSaving()
@@ -79,6 +87,36 @@ class HomeFragment : Fragment() {
         setLoading()
         setBalance()
         setUserData()
+        refreshData()
+    }
+
+    private fun adjustConstraintForNotFoundTransac() {
+        val constraintLayout = binding.constraintLayout
+        val constraintSet = ConstraintSet()
+        constraintSet.clone(constraintLayout)
+        constraintSet.connect(R.id.tv_latest_savings, ConstraintSet.TOP, R.id.tvNotFoundTransac, ConstraintSet.BOTTOM, 16)
+        constraintSet.applyTo(constraintLayout)
+    }
+
+    private fun showNotFound(isEmptyTransac: Boolean = false) {
+        binding.tvNotFoundTransac.visibility = if (isEmptyTransac) View.VISIBLE else View.GONE
+        if (isEmptyTransac) {
+            adjustConstraintForNotFoundTransac()
+        }
+    }
+
+    private fun showNotFoundSaving(isEmptySaving: Boolean = false) {
+        binding.tvNotFoundSaving.visibility = if (isEmptySaving) View.VISIBLE else View.GONE
+    }
+
+    private fun refreshData() {
+        binding.swipeRefresh.setOnRefreshListener {
+            viewModel.getTotalBalance()
+            viewModel.getUserData()
+            historyViewModel.getHistory()
+            savingViewModel.getSaving()
+            binding.swipeRefresh.isRefreshing = false
+        }
     }
 
     private fun avatarBtn() {
@@ -109,10 +147,6 @@ class HomeFragment : Fragment() {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
-    private fun showNotFound(isEmpty: Boolean) {
-        binding.tvNotFound.visibility = if (isEmpty) View.VISIBLE else View.GONE
-    }
-
     private fun setUserData() {
         viewModel.userData.observe(viewLifecycleOwner) { userData ->
             if (userData != null) {
@@ -125,7 +159,7 @@ class HomeFragment : Fragment() {
     private fun setBalance() {
         viewModel.totalBalance.observe(viewLifecycleOwner) { totalBalance ->
             if (totalBalance != null) {
-                binding.tvTotalAmount.text = formatCurrency(totalBalance.data)
+                binding.tvTotalAmount.text = formatCurrency(totalBalance.data?.toLong())
             }
         }
         viewModel.getTotalBalance()
@@ -144,5 +178,6 @@ class HomeFragment : Fragment() {
         val adapter = SavingMiniAdapter()
         adapter.submitList(latestSaving)
         binding.rvSavings.adapter = adapter
+        showLoading(false)
     }
 }

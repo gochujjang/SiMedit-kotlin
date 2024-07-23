@@ -16,6 +16,7 @@ import com.codewithre.simedit.ui.profile.edit.EditProfileViewModel
 import com.codewithre.simedit.ui.profile.reset.ResetPassViewModel
 import com.codewithre.simedit.ui.savings.SavingsViewModel
 import com.codewithre.simedit.ui.savings.detail.DetailSavingViewModel
+import com.codewithre.simedit.ui.savings.listmember.ListMemberViewModel
 
 class ViewModelFactory(private val repository: UserRepository) : ViewModelProvider.NewInstanceFactory() {
 
@@ -54,6 +55,9 @@ class ViewModelFactory(private val repository: UserRepository) : ViewModelProvid
             }
             modelClass.isAssignableFrom(ResetPassViewModel::class.java) -> {
                 ResetPassViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(ListMemberViewModel::class.java) -> {
+                ListMemberViewModel(repository) as T
             }
 
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)

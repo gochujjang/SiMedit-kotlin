@@ -19,8 +19,8 @@ class SavingAdapter : ListAdapter<SavingItem, SavingAdapter.MyViewHolder>(DIFF_C
         fun bind(item: SavingItem) {
             binding.apply {
                 tvTitleSaving.text = item.title
-                tvMoneyCollected.text = formatCurrency(item.terkumpul)
-                tvTotalCollected.text = formatCurrency(item.target)
+                tvMoneyCollected.text = formatCurrency(item.terkumpul?.toLong())
+                tvTotalCollected.text = formatCurrency(item.target?.toLong())
                 if (item.persentase!! >= 100) {
                     tvProgressSaving.text = binding.root.context.getString(R.string.finished)
                 } else {

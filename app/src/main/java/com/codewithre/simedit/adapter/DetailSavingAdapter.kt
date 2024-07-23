@@ -1,5 +1,6 @@
 package com.codewithre.simedit.adapter
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -10,6 +11,7 @@ import com.codewithre.simedit.R
 import com.codewithre.simedit.data.remote.response.TransaksiPortoItem
 import com.codewithre.simedit.databinding.ItemTransactionBinding
 import com.codewithre.simedit.databinding.ItemTransactionsavingBinding
+import com.codewithre.simedit.ui.savings.detail.TransacProofActivity
 import com.codewithre.simedit.utils.formatCurrency
 import com.codewithre.simedit.utils.formatDate
 
@@ -19,7 +21,7 @@ class DetailSavingAdapter : ListAdapter<TransaksiPortoItem, DetailSavingAdapter.
         fun bind(item: TransaksiPortoItem) {
             binding.apply {
                 tvTitleTransac.text = item.keterangan
-                tvValueTransac.text = formatCurrency(item.nominal)
+                tvValueTransac.text = formatCurrency(item.nominal?.toLong())
                 val formattedDate = formatDate(item.createdAt.toString())
                 tvDateTransac.text = formattedDate
                 tvUserName.text = item.user?.name ?: "Null"
@@ -36,6 +38,14 @@ class DetailSavingAdapter : ListAdapter<TransaksiPortoItem, DetailSavingAdapter.
                         ivArrow.setImageDrawable(ContextCompat.getDrawable(binding.root.context, R.drawable.ic_arrow_down))
                         ivArrow.setColorFilter(ContextCompat.getColor(binding.root.context, R.color.red))
                     }
+                }
+
+                root.setOnClickListener {
+                    val context = it.context
+                    val intent = Intent(context, TransacProofActivity::class.java).apply {
+                        putExtra(EXTRA_PIC, item.foto)
+                    }
+                    context.startActivity(intent)
                 }
             }
         }
@@ -56,6 +66,8 @@ class DetailSavingAdapter : ListAdapter<TransaksiPortoItem, DetailSavingAdapter.
     }
 
     companion object {
+        const val EXTRA_PIC = "extra_pic"
+
         val DIFF_CALLBACK = object : DiffUtil.ItemCallback<TransaksiPortoItem>(){
             override fun areItemsTheSame(oldItem: TransaksiPortoItem, newItem: TransaksiPortoItem): Boolean {
                 return oldItem == newItem

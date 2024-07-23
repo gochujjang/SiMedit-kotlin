@@ -25,6 +25,8 @@ class SavingsFragment : Fragment() {
         ViewModelFactory.getInstance(requireContext())
     }
 
+    private var isShortFormat: Boolean = true
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -39,7 +41,12 @@ class SavingsFragment : Fragment() {
         //rv
         viewModel.listSaving.observe(viewLifecycleOwner) {listSaving ->
             if (listSaving != null) {
-                setSaving(listSaving)
+                if (listSaving.isEmpty()) {
+                    showNotFound(true)
+                } else {
+                    showNotFound(false)
+                    setSaving(listSaving)
+                }
             }
         }
         viewModel.getSaving()
@@ -48,6 +55,29 @@ class SavingsFragment : Fragment() {
 
         setBalance()
         addSavingGoal()
+        refreshData()
+        setFormatCurrency()
+    }
+
+    private fun setFormatCurrency() {
+        binding.tvTotalTargetBalance.setOnClickListener {
+            isShortFormat = !isShortFormat
+
+            viewModel.totalSaveTarget.value?.data?.totalTarget?.let { target ->
+                binding.tvTotalTargetBalance.text = if (isShortFormat) formatShortCurrency(target.toLong()) else formatCurrency(target.toLong())
+            }
+        }
+    }
+
+    private fun showNotFound(isEmptyTransac: Boolean = false) {
+        binding.tvNotFoundTransac.visibility = if (isEmptyTransac) View.VISIBLE else View.GONE
+    }
+
+    private fun refreshData() {
+        binding.swipeRefresh.setOnRefreshListener {
+            viewModel.getSaving()
+            binding.swipeRefresh.isRefreshing = false
+        }
     }
 
     override fun onResume() {
@@ -67,17 +97,21 @@ class SavingsFragment : Fragment() {
         viewModel.apply {
             totalSaving.observe(viewLifecycleOwner) {
                 if (it?.data?.totalTerkumpul != null) {
-                    binding.tvTotalSavingsBalance.text = formatCurrency(it.data.totalTerkumpul.toInt())
+                    binding.tvTotalSavingsBalance.text = formatCurrency(it.data.totalTerkumpul.toLong())
                 } else {
                     binding.tvTotalSavingsBalance.text = formatCurrency(0)
                 }
             }
             totalSaveTarget.observe(viewLifecycleOwner) {
                 if (it?.data?.totalTarget != null) {
-                    binding.tvTotalTargetBalance.text = formatShortCurrency(it.data.totalTarget.toInt())
+                    binding.tvTotalTargetBalance.text = formatShortCurrency(it.data.totalTarget.toLong())
                 } else {
                     binding.tvTotalTargetBalance.text = formatShortCurrency(0)
                 }
+            }
+
+            remainingTotal.observe(viewLifecycleOwner) {
+                binding.tvRemainingTargetBalance.text = formatCurrency(it ?: 0)
             }
         }
     }

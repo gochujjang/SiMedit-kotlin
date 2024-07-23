@@ -1,185 +1,206 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipeRefresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.home.HomeFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:paddingBottom="150dp">
-        <LinearLayout
-            android:id="@+id/greetings"
-            android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:orientation="vertical"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-            <TextView
-                style="@style/tv_h3_18"
+            android:layout_marginTop="50dp"
+            android:paddingBottom="150dp">
+            <LinearLayout
+                android:id="@+id/greetings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/hello"/>
+                android:layout_marginStart="24dp"
+                android:orientation="vertical"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+                <TextView
+                    style="@style/tv_h3_18"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/hello"/>
+                <TextView
+                    style="@style/tv_body_regular_16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/user_called"/>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/iv_avatar"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="24dp"
+                android:src="@drawable/ic_avatar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/greetings"
+                app:layout_constraintBottom_toBottomOf="@id/greetings"/>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_user"
+                style="?attr/materialCardViewElevatedStyle"
+                android:layout_width="0dp"
+                android:layout_height="220dp"
+                android:layout_marginTop="24dp"
+                app:cardElevation="0dp"
+                app:cardCornerRadius="28dp"
+                android:backgroundTint="@color/blue"
+                app:layout_constraintTop_toBottomOf="@id/greetings"
+                app:layout_constraintStart_toStartOf="@id/greetings"
+                app:layout_constraintEnd_toEndOf="@id/iv_avatar">
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/ic_circle"
+                        android:layout_width="294dp"
+                        android:layout_height="294dp"
+                        android:src="@drawable/vector_donut"
+                        android:layout_gravity="bottom|end"
+                        android:layout_marginBottom="-20dp"
+                        android:layout_marginEnd="-150dp"/>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:paddingHorizontal="30dp"
+                        android:paddingTop="30dp"
+                        android:paddingBottom="20dp">
+                        <TextView
+                            android:id="@+id/tv_fullname"
+                            style="@style/tv_body_medium_18"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:text="@string/username"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"/>
+
+                        <TextView
+                            android:id="@+id/tv_total_amount"
+                            style="@style/tv_h1_30"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="97dp"
+                            android:textColor="@color/white"
+                            android:text="@string/total_amount"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="@id/tv_fullname"
+                            app:layout_constraintEnd_toEndOf="@id/tv_fullname"/>
+
+                        <TextView
+                            android:id="@+id/tv_total_amount_title"
+                            style="@style/tv_body_regular_16"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="-5dp"
+                            android:textColor="@color/white"
+                            android:text="@string/total_amount_title"
+                            app:layout_constraintBottom_toTopOf="@id/tv_total_amount"
+                            app:layout_constraintStart_toStartOf="@id/tv_total_amount"
+                            app:layout_constraintEnd_toEndOf="@id/tv_total_amount"/>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </FrameLayout>
+            </com.google.android.material.card.MaterialCardView>
+
             <TextView
+                android:id="@+id/tv_latest_transaction"
+                style="@style/tv_h4_16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="36dp"
+                android:text="@string/latest_transaction"
+                app:layout_constraintStart_toStartOf="@+id/card_user"
+                app:layout_constraintTop_toBottomOf="@id/card_user" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_history"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="20dp"
+                android:nestedScrollingEnabled="false"
+                app:layout_constraintTop_toBottomOf="@id/tv_latest_transaction"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/tv_latest_savings"/>
+
+            <TextView
+                android:id="@+id/tv_latest_savings"
+                style="@style/tv_h4_16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="36dp"
+                android:text="Latest Savings"
+                app:layout_constraintStart_toStartOf="@+id/tv_latest_transaction"
+                app:layout_constraintTop_toBottomOf="@id/rv_history" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_savings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="20dp"
+                android:nestedScrollingEnabled="false"
+                app:layout_constraintTop_toBottomOf="@id/tv_latest_savings"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <TextView
+                android:id="@+id/tvNotFoundTransac"
                 style="@style/tv_body_regular_16"
                 android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:text="@string/no_data"
+                android:textColor="@color/grey_dark"
+                android:gravity="center"
+                app:layout_constraintStart_toStartOf="@+id/card_user"
+                app:layout_constraintTop_toBottomOf="@id/tv_latest_transaction"
+                app:layout_constraintEnd_toEndOf="@id/card_user"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/tvNotFoundSaving"
+                style="@style/tv_body_regular_16"
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:text="@string/no_data"
+                android:textColor="@color/grey_dark"
+                android:gravity="center"
+                app:layout_constraintStart_toStartOf="@+id/card_user"
+                app:layout_constraintTop_toBottomOf="@id/tv_latest_savings"
+                app:layout_constraintEnd_toEndOf="@id/card_user"
+                android:visibility="gone"/>
+
+
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/user_called"/>
-        </LinearLayout>
+                android:layout_gravity="center"
+                android:visibility="gone"
+                tools:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:outlineAmbientShadowColor="?attr/colorOnPrimaryContainer"
+                android:outlineSpotShadowColor="?attr/colorOnPrimaryContainer"/>
 
-        <ImageView
-            android:id="@+id/iv_avatar"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginEnd="24dp"
-            android:src="@drawable/ic_avatar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/greetings"
-            app:layout_constraintBottom_toBottomOf="@id/greetings"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_user"
-            style="?attr/materialCardViewElevatedStyle"
-            android:layout_width="0dp"
-            android:layout_height="220dp"
-            android:layout_marginTop="24dp"
-            app:cardElevation="0dp"
-            app:cardCornerRadius="28dp"
-            android:backgroundTint="@color/blue"
-            app:layout_constraintTop_toBottomOf="@id/greetings"
-            app:layout_constraintStart_toStartOf="@id/greetings"
-            app:layout_constraintEnd_toEndOf="@id/iv_avatar">
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:id="@+id/ic_circle"
-                    android:layout_width="294dp"
-                    android:layout_height="294dp"
-                    android:src="@drawable/vector_donut"
-                    android:layout_gravity="bottom|end"
-                    android:layout_marginBottom="-20dp"
-                    android:layout_marginEnd="-150dp"/>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:paddingHorizontal="30dp"
-                    android:paddingTop="30dp"
-                    android:paddingBottom="20dp">
-                    <TextView
-                        android:id="@+id/tv_fullname"
-                        style="@style/tv_body_medium_18"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/white"
-                        android:text="@string/username"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"/>
-
-                    <TextView
-                        android:id="@+id/tv_total_amount"
-                        style="@style/tv_h1_30"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="97dp"
-                        android:textColor="@color/white"
-                        android:text="@string/total_amount"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="@id/tv_fullname"
-                        app:layout_constraintEnd_toEndOf="@id/tv_fullname"/>
-
-                    <TextView
-                        android:id="@+id/tv_total_amount_title"
-                        style="@style/tv_body_regular_16"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="-5dp"
-                        android:textColor="@color/white"
-                        android:text="@string/total_amount_title"
-                        app:layout_constraintBottom_toTopOf="@id/tv_total_amount"
-                        app:layout_constraintStart_toStartOf="@id/tv_total_amount"
-                        app:layout_constraintEnd_toEndOf="@id/tv_total_amount"/>
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </FrameLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <TextView
-            android:id="@+id/tv_latest_transaction"
-            style="@style/tv_h4_16"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="36dp"
-            android:text="@string/latest_transaction"
-            app:layout_constraintStart_toStartOf="@+id/card_user"
-            app:layout_constraintTop_toBottomOf="@id/card_user" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_history"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="20dp"
-            android:nestedScrollingEnabled="false"
-            app:layout_constraintTop_toBottomOf="@id/tv_latest_transaction"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/tv_latest_savings"/>
-
-        <TextView
-            android:id="@+id/tv_latest_savings"
-            style="@style/tv_h4_16"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="36dp"
-            android:text="Latest Savings"
-            app:layout_constraintStart_toStartOf="@+id/tv_latest_transaction"
-            app:layout_constraintTop_toBottomOf="@id/rv_history" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_savings"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="20dp"
-            android:nestedScrollingEnabled="false"
-            app:layout_constraintTop_toBottomOf="@id/tv_latest_savings"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
-
-        <ProgressBar
-            android:id="@+id/progressBar"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="gone"
-            tools:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:outlineAmbientShadowColor="?attr/colorOnPrimaryContainer"
-            android:outlineSpotShadowColor="?attr/colorOnPrimaryContainer"/>
-
-        <TextView
-            android:id="@+id/tvNotFound"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="@string/not_found"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:visibility="gone" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</androidx.core.widget.NestedScrollView>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

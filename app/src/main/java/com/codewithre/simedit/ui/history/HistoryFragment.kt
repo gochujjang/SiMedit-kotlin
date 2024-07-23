@@ -16,6 +16,9 @@ import com.codewithre.simedit.data.remote.response.HistoryItem
 import com.codewithre.simedit.databinding.FragmentHistoryBinding
 import com.codewithre.simedit.ui.ViewModelFactory
 import com.codewithre.simedit.utils.formatCurrency
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class HistoryFragment : Fragment() {
 
@@ -24,6 +27,9 @@ class HistoryFragment : Fragment() {
     private val viewModel: HistoryViewModel by viewModels {
         ViewModelFactory.getInstance(requireContext())
     }
+
+    private var fullHistoryList: List<HistoryItem?> = listOf()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,7 +42,7 @@ class HistoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val items = listOf("Harian", "Bulanan")
+        val items = listOf("All Time","This Day", "This Month")
 
         binding.autoComplete.setAdapter(
             ArrayAdapter(requireContext(), R.layout.item_timefilter, items)
@@ -46,12 +52,19 @@ class HistoryFragment : Fragment() {
             val selectedItem = items[position]
             // Handle the selected item
             Toast.makeText(requireContext(), selectedItem, Toast.LENGTH_SHORT).show()
+            filterHistory(selectedItem)
         }
 
         //rv
         viewModel.listHistory.observe(viewLifecycleOwner) {listHistory ->
             if (listHistory != null) {
-                setHistory(listHistory)
+                if (listHistory.isEmpty()) {
+                    showNotFound(true)
+                } else {
+                    showNotFound(false)
+                    fullHistoryList = listHistory
+                    setHistory(listHistory)
+                }
             }
         }
         viewModel.getHistory()
@@ -59,6 +72,23 @@ class HistoryFragment : Fragment() {
         binding.rvHistory.layoutManager = layoutManager
 
         setBalance()
+        refreshData()
+    }
+
+    private fun showNotFound(isEmptyTransac: Boolean = false) {
+        binding.tvNotFoundTransac.visibility = if (isEmptyTransac) View.VISIBLE else View.GONE
+    }
+
+    private fun refreshData() {
+        binding.swipeRefresh.setOnRefreshListener {
+            viewModel.apply {
+                getHistory()
+                getTotalIncome()
+                getTotalExpense()
+                getTotalBalance()
+            }
+            binding.swipeRefresh.isRefreshing = false
+        }
     }
 
     override fun onResume() {
@@ -76,17 +106,17 @@ class HistoryFragment : Fragment() {
         viewModel.apply {
             totalBalance.observe(viewLifecycleOwner) { totalBalance ->
                 if (totalBalance != null) {
-                    binding.tvTotalBalance.text = formatCurrency(totalBalance.data)
+                    binding.tvTotalBalance.text = formatCurrency(totalBalance.data?.toLong())
                 }
             }
             totalIncome.observe(viewLifecycleOwner) { totalIncome ->
                 if (totalIncome != null) {
-                    binding.tvIncomeBalance.text = formatCurrency(totalIncome.data)
+                    binding.tvIncomeBalance.text = formatCurrency(totalIncome.data?.toLong())
                 }
             }
             totalExpense.observe(viewLifecycleOwner) { totalExpense ->
                 if (totalExpense != null) {
-                    binding.tvExpenseBalance.text = formatCurrency(totalExpense.data)
+                    binding.tvExpenseBalance.text = formatCurrency(totalExpense.data?.toLong())
                 }
             }
 
@@ -101,5 +131,26 @@ class HistoryFragment : Fragment() {
         adapter.submitList(historyItem)
         binding.rvHistory.adapter = adapter
 
+    }
+
+    private fun filterHistory(filter: String) {
+        val filteredList = when (filter) {
+            "This Day" -> fullHistoryList.filter { it?.tgl?.startsWith(getTodayDate()) == true }
+            "This Month" -> fullHistoryList.filter { it?.tgl?.startsWith(getCurrentMonth()) == true }
+            else -> fullHistoryList
+        }
+        setHistory(filteredList)
+    }
+
+    private fun getTodayDate(): String {
+        // Return today's date in the same format as your data's date format
+        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        return sdf.format(Date())
+    }
+
+    private fun getCurrentMonth(): String {
+        // Return current month in the same format as your data's date format
+        val sdf = SimpleDateFormat("yyyy-MM", Locale.getDefault())
+        return sdf.format(Date())
     }
 }

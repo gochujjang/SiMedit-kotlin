@@ -1,5 +1,6 @@
 package com.codewithre.simedit.ui.savings
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -27,6 +28,9 @@ class SavingsViewModel(private val repository: UserRepository) : ViewModel() {
     private val _totalSaveTarget = MutableLiveData<TotalTargetResponse?>()
     val totalSaveTarget: LiveData<TotalTargetResponse?> = _totalSaveTarget
 
+    private val _remainingTotal = MutableLiveData<Long?>()
+    val remainingTotal: LiveData<Long?> = _remainingTotal
+
     fun getSaving() {
         _isLoading.value = true
         viewModelScope.launch {
@@ -38,6 +42,15 @@ class SavingsViewModel(private val repository: UserRepository) : ViewModel() {
                     _listSaving.value = response.data
                     _totalSaving.value = totalSaving
                     _totalSaveTarget.value = totalSavingTarget
+
+                    // Ensure values are not null before calculating
+                    val totalSavingsValue = totalSaving.data?.totalTerkumpul?.toLong() ?: 0L
+                    val totalTargetValue = totalSavingTarget.data?.totalTarget?.toLong() ?: 0L
+
+                    // Calculate the remaining value
+                    _remainingTotal.value = totalTargetValue.toLong() - totalSavingsValue.toLong()
+
+                    Log.d("COY REM", "rem: $_remainingTotal")
                 } else {
                     _errorMessage.value = response.message ?: "An error occurred"
                 }

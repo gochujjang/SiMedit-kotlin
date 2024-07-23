@@ -20,7 +20,7 @@ class HistoryAdapter : ListAdapter<HistoryItem, HistoryAdapter.MyViewHolder>(DIF
         fun bind(item: HistoryItem) {
             binding.apply {
                 tvTitleTransac.text = item.keterangan
-                tvValueTransac.text = formatCurrency(item.nominal)
+                tvValueTransac.text = formatCurrency(item.nominal?.toLong())
                 val formattedDate = formatDate(item.tgl.toString())
                 tvDateTransac.text = formattedDate
 

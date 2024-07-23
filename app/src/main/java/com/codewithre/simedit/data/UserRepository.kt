@@ -1,15 +1,18 @@
 package com.codewithre.simedit.data
 
+import androidx.lifecycle.liveData
 import com.codewithre.simedit.data.database.models.User
 import com.codewithre.simedit.data.pref.UserPreference
 import com.codewithre.simedit.data.remote.response.AddSavingResponse
 import com.codewithre.simedit.data.remote.response.AddTransacResponse
 import com.codewithre.simedit.data.remote.response.AddTransacSavingResponse
 import com.codewithre.simedit.data.remote.response.BalanceResponse
+import com.codewithre.simedit.data.remote.response.DeleteSavingResponse
 import com.codewithre.simedit.data.remote.response.DetailSavingResponse
 import com.codewithre.simedit.data.remote.response.DropdownSavingResponse
 import com.codewithre.simedit.data.remote.response.HistoryResponse
 import com.codewithre.simedit.data.remote.response.InviteResponse
+import com.codewithre.simedit.data.remote.response.ListMemberResponse
 import com.codewithre.simedit.data.remote.response.LogoutResponse
 import com.codewithre.simedit.data.remote.response.ResetPassResponse
 import com.codewithre.simedit.data.remote.response.SavingLatestResponse
@@ -22,6 +25,8 @@ import com.codewithre.simedit.data.remote.retrofit.ApiService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.http.Field
 
 class UserRepository private constructor(
@@ -98,17 +103,33 @@ class UserRepository private constructor(
             apiService.getDetailSaving(id)
         }
     }
+
+    suspend fun getListMember(id : Int) : ListMemberResponse {
+        return withContext(Dispatchers.IO) {
+            apiService.getListMember(id)
+        }
+    }
+
+    suspend fun deleteSaving(id : Int) : DeleteSavingResponse {
+        return withContext(Dispatchers.IO) {
+            apiService.deleteSaving(id)
+        }
+    }
     suspend fun addTransactionSaving(
-        status : String,
-        nominal : Int,
-        portomember_id : Int,
-        keterangan : String
+        status : RequestBody,
+        nominal : RequestBody,
+        portomember_id : RequestBody,
+        keterangan : RequestBody,
+        description : RequestBody,
+        foto : MultipartBody.Part
     ) : AddTransacSavingResponse {
         return withContext(Dispatchers.IO) {
             apiService.addTransactionSaving(
                 status,
                 nominal,
                 keterangan,
+                foto,
+                description,
                 portomember_id
             )
         }

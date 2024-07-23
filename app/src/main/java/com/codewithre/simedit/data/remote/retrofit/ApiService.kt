@@ -4,10 +4,12 @@ import com.codewithre.simedit.data.remote.response.AddSavingResponse
 import com.codewithre.simedit.data.remote.response.AddTransacResponse
 import com.codewithre.simedit.data.remote.response.AddTransacSavingResponse
 import com.codewithre.simedit.data.remote.response.BalanceResponse
+import com.codewithre.simedit.data.remote.response.DeleteSavingResponse
 import com.codewithre.simedit.data.remote.response.DetailSavingResponse
 import com.codewithre.simedit.data.remote.response.DropdownSavingResponse
 import com.codewithre.simedit.data.remote.response.HistoryResponse
 import com.codewithre.simedit.data.remote.response.InviteResponse
+import com.codewithre.simedit.data.remote.response.ListMemberResponse
 import com.codewithre.simedit.data.remote.response.LoginResponse
 import com.codewithre.simedit.data.remote.response.LogoutResponse
 import com.codewithre.simedit.data.remote.response.RegisterData
@@ -19,12 +21,16 @@ import com.codewithre.simedit.data.remote.response.TotalTargetResponse
 import com.codewithre.simedit.data.remote.response.TotalTerkumpulResponse
 import com.codewithre.simedit.data.remote.response.UpdateProfileResponse
 import com.codewithre.simedit.data.remote.response.UserResponse
+import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
+import retrofit2.http.DELETE
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
 import retrofit2.http.Path
 
 interface ApiService {
@@ -111,13 +117,15 @@ interface ApiService {
         @Path("id") id: Int
     ) : DetailSavingResponse
 
-    @FormUrlEncoded
+    @Multipart
     @POST("portofolio-transaction")
     suspend fun addTransactionSaving(
-        @Field("status") status: String,
-        @Field("nominal") nominal: Int,
-        @Field("keterangan") keterangan: RequestBody,
-        @Field("portomember_id") portomember_id: Int
+        @Part("status") status: RequestBody,
+        @Part("nominal") nominal: RequestBody,
+        @Part("keterangan") keterangan: RequestBody,
+        @Part foto: MultipartBody.Part,
+        @Part("description") description: RequestBody,
+        @Part("portomember_id") portomember_id: RequestBody
     ) : AddTransacSavingResponse
 
     @FormUrlEncoded
@@ -127,4 +135,14 @@ interface ApiService {
         @Field("porto_id") portoId: Int,
     ) : InviteResponse
 
+
+    @GET("listmember/{id}")
+    suspend fun getListMember(
+        @Path("id") id: Int
+    ) : ListMemberResponse
+
+    @DELETE("portofolio/{id}")
+    suspend fun deleteSaving(
+        @Path("id") id: Int
+    ) : DeleteSavingResponse
 }

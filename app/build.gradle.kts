@@ -69,4 +69,11 @@ dependencies {
 
     implementation(libs.rupiah.edittext)
     implementation(libs.circularprogressbar)
+    // Import Glide
+    implementation(libs.glide)
+    implementation(libs.swiperefreshlayout)
+    // Import CameraX
+    implementation(libs.androidx.camera.camera2)
+    implementation(libs.camera.lifecycle)
+    implementation(libs.camera.view)
 }

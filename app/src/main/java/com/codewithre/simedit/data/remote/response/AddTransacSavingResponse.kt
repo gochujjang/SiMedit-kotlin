@@ -25,9 +25,27 @@ data class TransacSavingData(
 	@field:SerializedName("nominal")
 	val nominal: String? = null,
 
+	@field:SerializedName("foto")
+	val foto: String? = null,
+
+	@field:SerializedName("user_id")
+	val userId: Int? = null,
+
+	@field:SerializedName("user_Data")
+	val userData: UserData? = null,
+
 	@field:SerializedName("portomember_id")
 	val portomemberId: String? = null,
 
 	@field:SerializedName("status")
 	val status: String? = null
+)
+
+data class UserData(
+
+	@field:SerializedName("email")
+	val email: String? = null,
+
+	@field:SerializedName("username")
+	val username: String? = null
 )

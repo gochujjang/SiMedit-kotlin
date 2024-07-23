@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.codewithre.simedit.data.UserRepository
 import com.codewithre.simedit.data.remote.response.DetailSavingResponse
+import com.codewithre.simedit.data.remote.response.MemberItem
 import com.codewithre.simedit.data.remote.response.SavingDetailItem
 import com.codewithre.simedit.data.remote.response.TransaksiPortoItem
 import kotlinx.coroutines.launch
@@ -28,6 +29,28 @@ class DetailSavingViewModel(private val repository: UserRepository) : ViewModel(
     private val _inviteMessage = MutableLiveData<String?>()
     val inviteMessage: LiveData<String?> = _inviteMessage
 
+    private val _deleteMessage = MutableLiveData<String?>()
+    val deleteMessage: LiveData<String?> = _deleteMessage
+
+    fun deleteSaving(id: Int) {
+        _isLoading.value = true
+        viewModelScope.launch {
+            try {
+                val response = repository.deleteSaving(id)
+                if (response.success == true) {
+                    _deleteMessage.value = "Successfuly deleted"
+                    _isLoading.value = false
+                } else {
+                    _deleteMessage.value = response.message ?: "An error occurred"
+                }
+            } catch (e: Exception) {
+                _deleteMessage.value = e.message ?: "An error occurred"
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
+
     fun inviteFriend(email: String, portoId: Int) {
         _isLoading.value = true
         viewModelScope.launch {
@@ -46,6 +69,8 @@ class DetailSavingViewModel(private val repository: UserRepository) : ViewModel(
             }
         }
     }
+
+
 
     fun getDetailSaving(id: Int) {
         _isLoading.value = true

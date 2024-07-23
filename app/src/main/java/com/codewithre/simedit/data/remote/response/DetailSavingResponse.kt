@@ -43,6 +43,9 @@ data class TransaksiPortoItem(
 	@field:SerializedName("keterangan")
 	val keterangan: String? = null,
 
+	@field:SerializedName("foto")
+	val foto: String? = null,
+
 	@field:SerializedName("nominal")
 	val nominal: Int? = null,
 
