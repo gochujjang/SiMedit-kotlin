@@ -2,13 +2,11 @@ package com.codewithre.simedit.ui.home
 
 import androidx.fragment.app.viewModels
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintSet
-import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -75,6 +73,10 @@ class HomeFragment : Fragment() {
         }
         savingViewModel.getSaving()
 
+        historyViewModel.transactionChangedEvent.observe(viewLifecycleOwner) {
+            getRefreshData()
+        }
+
         val historyLayoutManager = LinearLayoutManager(requireContext())
         val savingLayoutManager = LinearLayoutManager(requireContext())
         binding.apply {
@@ -90,31 +92,26 @@ class HomeFragment : Fragment() {
         refreshData()
     }
 
-    private fun adjustConstraintForNotFoundTransac() {
-        val constraintLayout = binding.constraintLayout
-        val constraintSet = ConstraintSet()
-        constraintSet.clone(constraintLayout)
-        constraintSet.connect(R.id.tv_latest_savings, ConstraintSet.TOP, R.id.tvNotFoundTransac, ConstraintSet.BOTTOM, 16)
-        constraintSet.applyTo(constraintLayout)
+    private fun getRefreshData() {
+        viewModel.getTotalBalance()
+        viewModel.getUserData()
+        historyViewModel.getHistory()
+        savingViewModel.getSaving()
     }
 
     private fun showNotFound(isEmptyTransac: Boolean = false) {
         binding.tvNotFoundTransac.visibility = if (isEmptyTransac) View.VISIBLE else View.GONE
-        if (isEmptyTransac) {
-            adjustConstraintForNotFoundTransac()
-        }
+        binding.rvHistory.visibility = if (isEmptyTransac) View.GONE else View.VISIBLE
     }
 
     private fun showNotFoundSaving(isEmptySaving: Boolean = false) {
         binding.tvNotFoundSaving.visibility = if (isEmptySaving) View.VISIBLE else View.GONE
+        binding.rvSavings.visibility = if (isEmptySaving) View.GONE else View.VISIBLE
     }
 
     private fun refreshData() {
         binding.swipeRefresh.setOnRefreshListener {
-            viewModel.getTotalBalance()
-            viewModel.getUserData()
-            historyViewModel.getHistory()
-            savingViewModel.getSaving()
+            getRefreshData()
             binding.swipeRefresh.isRefreshing = false
         }
     }
@@ -131,10 +128,7 @@ class HomeFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        viewModel.getTotalBalance()
-        viewModel.getUserData()
-        historyViewModel.getHistory()
-        savingViewModel.getSaving()
+        getRefreshData()
     }
 
     private fun setLoading() {
@@ -167,7 +161,7 @@ class HomeFragment : Fragment() {
 
     private fun setLatestHistory(listHistory: List<HistoryItem?>) {
         val latestHistory = listHistory.takeLast(5)
-        val adapter = HistoryAdapter()
+        val adapter = HistoryAdapter(historyViewModel, requireContext())
         adapter.submitList(latestHistory)
         binding.rvHistory.adapter = adapter
         showLoading(false)

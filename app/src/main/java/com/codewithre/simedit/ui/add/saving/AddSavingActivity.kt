@@ -1,6 +1,7 @@
 package com.codewithre.simedit.ui.add.saving
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -24,6 +25,12 @@ class AddSavingActivity : AppCompatActivity() {
 
         buttonBack()
         addSaving()
+
+        // Observe ViewModel LiveData
+        viewModel.addSavingResult.observe(this) { response ->
+            showToast(response.message ?: "Transaction added successfully")
+            finish()
+        }
     }
 
     private fun addSaving() {
@@ -40,10 +47,14 @@ class AddSavingActivity : AppCompatActivity() {
                     return@setOnClickListener
                 } else {
                    viewModel.addSaving(titleSaving, totalTarget)
-                   finish()
+                    showToast("Uploading...")
                 }
             }
         }
+    }
+
+    private fun showToast(s: String) {
+        Toast.makeText(this, s, Toast.LENGTH_SHORT).show()
     }
 
     private fun buttonBack() {

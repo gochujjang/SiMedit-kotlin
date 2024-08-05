@@ -29,6 +29,41 @@ class HistoryViewModel(private val repository: UserRepository) : ViewModel() {
     private val _totalExpense = MutableLiveData<BalanceResponse?>()
     val totalExpense: LiveData<BalanceResponse?> = _totalExpense
 
+    private val _deleteMessage = MutableLiveData<String?>()
+    val deleteMessage: LiveData<String?> = _deleteMessage
+
+    private val _transactionChangedEvent = MutableLiveData<Unit>()
+    val transactionChangedEvent: LiveData<Unit> = _transactionChangedEvent
+
+    fun resetDeleteMessage() {
+        _deleteMessage.value = null
+    }
+
+    fun deleteTransaction(id: Int) {
+        _deleteMessage.value = null // Reset delete message before making a new request
+        _isLoading.value = true
+        viewModelScope.launch {
+            try {
+                val response = repository.deleteTransaction(id)
+                if (response.success == true) {
+                    _deleteMessage.value = response.message
+                    _transactionChangedEvent.value = Unit
+//                    getHistory()
+//                    getTotalIncome()
+//                    getTotalExpense()
+//                    getTotalBalance()
+                    _isLoading.value = false
+                } else {
+                    _deleteMessage.value = response.message ?: "An error occurred"
+                }
+            } catch (e: Exception) {
+                _deleteMessage.value = e.message ?: "An error occurred"
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
+
     fun getTotalIncome() {
         _isLoading.value = true
         viewModelScope.launch {

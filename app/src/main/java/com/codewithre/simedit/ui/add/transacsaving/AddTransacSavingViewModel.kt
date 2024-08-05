@@ -23,6 +23,9 @@ class AddTransacSavingViewModel(private val repository: UserRepository) : ViewMo
     private val _errorMessage = MutableLiveData<String>()
     val errorMessage: LiveData<String> = _errorMessage
 
+    private val _transactionUploadStatus = MutableLiveData<Boolean>()
+    val transactionUploadStatus: LiveData<Boolean> = _transactionUploadStatus
+
     fun addSavingTransaction(
         status : RequestBody,
         nominal : RequestBody,
@@ -44,12 +47,15 @@ class AddTransacSavingViewModel(private val repository: UserRepository) : ViewMo
                 )
                 if (response.success == true) {
                     _addTransactionResult.value = response
+                    _transactionUploadStatus.value = true // Mark success
                 } else {
                     _errorMessage.value = response.message ?: "An error occurred"
+                    _transactionUploadStatus.value = false // Mark failure
                 }
             } catch (e: Exception) {
                 _errorMessage.value = e.message ?: "An error occurred"
                 e.printStackTrace()
+                _transactionUploadStatus.value = false // Mark failure
                 _isLoading.value = false
             } finally {
                 _isLoading.value = false

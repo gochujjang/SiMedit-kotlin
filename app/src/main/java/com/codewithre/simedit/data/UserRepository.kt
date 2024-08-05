@@ -7,9 +7,11 @@ import com.codewithre.simedit.data.remote.response.AddSavingResponse
 import com.codewithre.simedit.data.remote.response.AddTransacResponse
 import com.codewithre.simedit.data.remote.response.AddTransacSavingResponse
 import com.codewithre.simedit.data.remote.response.BalanceResponse
+import com.codewithre.simedit.data.remote.response.DeleteResponse
 import com.codewithre.simedit.data.remote.response.DeleteSavingResponse
 import com.codewithre.simedit.data.remote.response.DetailSavingResponse
 import com.codewithre.simedit.data.remote.response.DropdownSavingResponse
+import com.codewithre.simedit.data.remote.response.EditSavingResponse
 import com.codewithre.simedit.data.remote.response.HistoryResponse
 import com.codewithre.simedit.data.remote.response.InviteResponse
 import com.codewithre.simedit.data.remote.response.ListMemberResponse
@@ -115,6 +117,21 @@ class UserRepository private constructor(
             apiService.deleteSaving(id)
         }
     }
+    suspend fun deleteSavingTrans(id : Int) : DeleteResponse {
+        return withContext(Dispatchers.IO) {
+            apiService.deleteSavingTrans(id)
+        }
+    }
+    suspend fun deleteTransaction(id : Int) : DeleteResponse {
+        return withContext(Dispatchers.IO) {
+            apiService.deleteTransaction(id)
+        }
+    }
+    suspend fun deleteMember(portoId : Int, memberId : Int) : DeleteSavingResponse {
+        return withContext(Dispatchers.IO) {
+            apiService.deleteMember(portoId, memberId)
+        }
+    }
     suspend fun addTransactionSaving(
         status : RequestBody,
         nominal : RequestBody,
@@ -157,6 +174,20 @@ class UserRepository private constructor(
     ) : AddSavingResponse {
         return withContext(Dispatchers.IO) {
             apiService.addSaving(
+                title,
+                target
+            )
+        }
+    }
+
+    suspend fun editSaving(
+        id: Int,
+        title : String,
+        target : Int
+    ) : EditSavingResponse {
+        return withContext(Dispatchers.IO) {
+            apiService.editSaving(
+                id,
                 title,
                 target
             )

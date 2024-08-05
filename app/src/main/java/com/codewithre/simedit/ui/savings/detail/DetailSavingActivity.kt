@@ -1,6 +1,7 @@
 package com.codewithre.simedit.ui.savings.detail
 
 import android.animation.ObjectAnimator
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -16,11 +17,15 @@ import androidx.core.view.marginTop
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.codewithre.simedit.R
 import com.codewithre.simedit.adapter.DetailSavingAdapter
+import com.codewithre.simedit.data.remote.response.SavingDetailItem
 import com.codewithre.simedit.data.remote.response.TransaksiPortoItem
 import com.codewithre.simedit.databinding.ActivityDetailSavingBinding
 import com.codewithre.simedit.ui.ViewModelFactory
 import com.codewithre.simedit.ui.add.transacsaving.AddTransacSavingActivity
 import com.codewithre.simedit.ui.savings.SavingsFragment.Companion.EXTRA_ID
+import com.codewithre.simedit.ui.savings.detail.EditDetailActivity.Companion.EXTRA_DETAIL_ID
+import com.codewithre.simedit.ui.savings.detail.EditDetailActivity.Companion.EXTRA_DETAIL_TARGET
+import com.codewithre.simedit.ui.savings.detail.EditDetailActivity.Companion.EXTRA_DETAIL_TITLE
 import com.codewithre.simedit.ui.savings.listmember.ListMemberActivity
 import com.codewithre.simedit.utils.formatCurrency
 import com.codewithre.simedit.utils.formatShortCurrency
@@ -33,6 +38,8 @@ class DetailSavingActivity : AppCompatActivity() {
         ViewModelFactory.getInstance(this)
     }
     private var id : Int = 0
+    private var title: String = ""
+    private var target: Int = 0
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
     private var isShortFormat: Boolean = true
 
@@ -66,10 +73,17 @@ class DetailSavingActivity : AppCompatActivity() {
             }
         }
 
+        viewModel.detailSaving.observe(this) {
+            if (it != null) {
+                title = it.title.toString()
+                target = it.target ?: 0
+                setDetailData(it)
+            }
+        }
+
         // Set initial state to hidden
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         setupBottomSheet()
-        setDetailData()
         setTransactionData()
         setBackBtn()
         setTransactionBtn()
@@ -118,6 +132,7 @@ class DetailSavingActivity : AppCompatActivity() {
         binding.tvRemainingTargetBalance.text = if (isShortFormat) formatShortCurrency(remainingBalance) else formatCurrency(remainingBalance)
     }
 
+    @SuppressLint("InflateParams")
     private fun setupBottomSheet() {
         binding.tvInvite.setOnClickListener {
             val builder = AlertDialog.Builder(this)
@@ -167,6 +182,16 @@ class DetailSavingActivity : AppCompatActivity() {
                     bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
                 }
                 .show()
+        }
+
+        binding.tvEditSaving.setOnClickListener {
+            val intent = Intent(this, EditDetailActivity::class.java)
+            intent.putExtra(EXTRA_DETAIL_ID, id)
+            intent.putExtra(EXTRA_DETAIL_TITLE, title)
+            intent.putExtra(EXTRA_DETAIL_TARGET, target)
+            Log.d("COY DetailSavingActivity", "anjg: $id , $title , $target")
+            startActivity(intent)
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         }
 
         val bottomSheet = binding.bottomSheet
@@ -237,6 +262,12 @@ class DetailSavingActivity : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.getDetailSaving(id)
+    }
+
+
     private fun setBackBtn() {
         binding.btnBack.setOnClickListener {
             finish()
@@ -265,38 +296,31 @@ class DetailSavingActivity : AppCompatActivity() {
         binding.rvTransacsaving.adapter = adapter
     }
 
-    private fun setDetailData() {
-        viewModel.apply {
-            detailSaving.observe(this@DetailSavingActivity) {
-                binding.apply {
-                    tvTitleSaving.text = it?.title ?: "Null"
+    private fun setDetailData(detail: SavingDetailItem?) {
+        detail?.let {
+            binding.tvTitleSaving.text = it.title ?: "Null"
 
-                    val totalSavings = it?.terkumpul?.toLong() ?: 0L
-                    val totalTarget = it?.target?.toLong() ?: 0L
-                    val remainingBalance = totalTarget - totalSavings
+            val totalSavings = it.terkumpul?.toLong() ?: 0L
+            val totalTarget = it.target?.toLong() ?: 0L
+            val remainingBalance = totalTarget - totalSavings
 
-                    tvTotalSavingsBalance.text = formatShortCurrency(totalSavings)
-                    tvTotalTargetBalance.text = formatShortCurrency(totalTarget)
-                    tvRemainingTargetBalance.text = formatShortCurrency(remainingBalance)
-                    val persentasi = it?.persentase?.toFloat()
-                    tvProgressPercent.text = getString(R.string.progress_savings, it?.persentase)
-                    circularProgressBar.apply {
-                        progressMax = 100f
-                        if (persentasi != null) {
-                            setProgressWithAnimation(persentasi, 1000)
-                        } else {
-                            setProgressWithAnimation(0f, 1000)
-                        }
-                    }
+            binding.tvTotalSavingsBalance.text = formatShortCurrency(totalSavings)
+            binding.tvTotalTargetBalance.text = formatShortCurrency(totalTarget)
+            binding.tvRemainingTargetBalance.text = formatShortCurrency(remainingBalance)
+            val persentasi = it.persentase?.toFloat()
+            binding.tvProgressPercent.text = getString(R.string.progress_savings, it.persentase)
+            binding.circularProgressBar.apply {
+                progressMax = 100f
+                if (persentasi != null) {
+                    setProgressWithAnimation(persentasi, 1000)
+                } else {
+                    setProgressWithAnimation(0f, 1000)
                 }
             }
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.getDetailSaving(id)
-    }
+
 
 //    private fun showLoading(isLoading: Boolean) {
 //        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE

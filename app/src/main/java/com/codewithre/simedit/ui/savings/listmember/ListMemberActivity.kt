@@ -2,6 +2,7 @@ package com.codewithre.simedit.ui.savings.listmember
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -44,14 +45,34 @@ class ListMemberActivity : AppCompatActivity() {
                 }
             }
         }
+
+        viewModel.deleteMember.observe(this) {
+            Toast.makeText(this, it.toString(), Toast.LENGTH_SHORT).show()
+        }
+
         val layoutManager = LinearLayoutManager(this)
         binding.rvListmember.layoutManager = layoutManager
 
         binding.btnBack.setOnClickListener { finish() }
+        refreshData()
+
+    }
+
+    private fun refreshData() {
+        binding.swipeRefresh.setOnRefreshListener {
+            viewModel.getListMember(id)
+
+            binding.swipeRefresh.isRefreshing = false
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getListMember(id)
     }
 
     private fun setListMember(listMember: List<MemberItem?>) {
-        val adapter = MemberAdapter()
+        val adapter = MemberAdapter(viewModel, this)
         adapter.submitList(listMember)
         binding.rvListmember.adapter = adapter
     }

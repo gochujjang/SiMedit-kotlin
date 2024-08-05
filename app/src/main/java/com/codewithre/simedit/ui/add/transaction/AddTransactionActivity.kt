@@ -39,6 +39,16 @@ class AddTransactionActivity : AppCompatActivity() {
         setupBackButton()
         setupDatePicker()
         addTransaction()
+
+        viewModel.addTransactionResult.observe(this) { response ->
+            if (response.message == "success") {
+                showToast("Transaction added successfully")
+                viewModel.notifyTransactionChanged()
+                finish()
+            } else {
+                showToast("Failed to add transaction")
+            }
+        }
     }
 
     private fun addTransaction() {
@@ -56,13 +66,11 @@ class AddTransactionActivity : AppCompatActivity() {
                     edDesc.error = "Description can't be empty"
                     return@setOnClickListener
                 } else {
-                    Log.d("COY AddTransactionActivity", "tipe transac: $typeTransac \n balance: $balance \n dateTransac: $dateTransac \n desc: $desc")
                     viewModel.addTransaction(
                         typeTransac,
                         balance.toString(),
                         dateTransac,
                         desc.toString())
-                    finish()
                 }
             }
         }

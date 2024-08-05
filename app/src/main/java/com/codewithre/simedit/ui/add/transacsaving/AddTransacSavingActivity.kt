@@ -82,6 +82,12 @@ class AddTransacSavingActivity : AppCompatActivity() {
         setupBackButton()
         binding.btnAddPhoto.setOnClickListener { startCamera() }
         binding.btnAddTransaction.setOnClickListener { uploadTransaction() }
+
+        // Observe ViewModel LiveData
+        viewModel.addTransactionResult.observe(this) { response ->
+            showToast(response.message ?: "Transaction added successfully")
+            finish()
+        }
     }
 
     override fun onDestroy() {
@@ -126,8 +132,8 @@ class AddTransacSavingActivity : AppCompatActivity() {
                     requestBody,
                     multipartBody,
                     )
+                showToast("Uploading...")
                 showLoading(false)
-                finish()
             }
         }
     }

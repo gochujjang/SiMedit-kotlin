@@ -44,6 +44,7 @@ class DetailSavingAdapter : ListAdapter<TransaksiPortoItem, DetailSavingAdapter.
                     val context = it.context
                     val intent = Intent(context, TransacProofActivity::class.java).apply {
                         putExtra(EXTRA_PIC, item.foto)
+                        putExtra(EXTRA_ID, item.id)
                     }
                     context.startActivity(intent)
                 }
@@ -67,6 +68,7 @@ class DetailSavingAdapter : ListAdapter<TransaksiPortoItem, DetailSavingAdapter.
 
     companion object {
         const val EXTRA_PIC = "extra_pic"
+        const val EXTRA_ID = "extra_id"
 
         val DIFF_CALLBACK = object : DiffUtil.ItemCallback<TransaksiPortoItem>(){
             override fun areItemsTheSame(oldItem: TransaksiPortoItem, newItem: TransaksiPortoItem): Boolean {

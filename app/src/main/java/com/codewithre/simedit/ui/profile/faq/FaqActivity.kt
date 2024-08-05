@@ -79,18 +79,5 @@ class FaqActivity : AppCompatActivity() {
                 getString(R.string.faq_a5),
             )
         )
-        faqList.add(
-            Faq(
-                getString(R.string.faq_q6),
-                getString(R.string.faq_a6),
-            )
-        )
-        faqList.add(
-            Faq(
-                getString(R.string.faq_q7),
-                getString(R.string.faq_a7),
-            )
-        )
-
     }
 }

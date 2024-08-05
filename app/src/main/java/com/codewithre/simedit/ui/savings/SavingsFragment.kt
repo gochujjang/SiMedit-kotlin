@@ -71,6 +71,7 @@ class SavingsFragment : Fragment() {
 
     private fun showNotFound(isEmptyTransac: Boolean = false) {
         binding.tvNotFoundTransac.visibility = if (isEmptyTransac) View.VISIBLE else View.GONE
+        binding.rvSavings.visibility = if (isEmptyTransac) View.GONE else View.VISIBLE
     }
 
     private fun refreshData() {

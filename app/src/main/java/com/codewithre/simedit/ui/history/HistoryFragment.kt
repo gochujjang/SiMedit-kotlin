@@ -2,6 +2,7 @@ package com.codewithre.simedit.ui.history
 
 import androidx.fragment.app.viewModels
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +16,7 @@ import com.codewithre.simedit.adapter.HistoryAdapter
 import com.codewithre.simedit.data.remote.response.HistoryItem
 import com.codewithre.simedit.databinding.FragmentHistoryBinding
 import com.codewithre.simedit.ui.ViewModelFactory
+import com.codewithre.simedit.ui.add.transaction.AddTransactionViewModel
 import com.codewithre.simedit.utils.formatCurrency
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -27,6 +29,11 @@ class HistoryFragment : Fragment() {
     private val viewModel: HistoryViewModel by viewModels {
         ViewModelFactory.getInstance(requireContext())
     }
+
+    private val transactionViewModel: AddTransactionViewModel by viewModels {
+        ViewModelFactory.getInstance(requireContext())
+    }
+
 
     private var fullHistoryList: List<HistoryItem?> = listOf()
 
@@ -68,6 +75,23 @@ class HistoryFragment : Fragment() {
             }
         }
         viewModel.getHistory()
+
+        viewModel.deleteMessage.observe(viewLifecycleOwner) { message ->
+            if (!message.isNullOrEmpty()) {
+                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+                viewModel.resetDeleteMessage() // Reset the delete message after showing the toast
+            }
+        }
+
+        viewModel.transactionChangedEvent.observe(viewLifecycleOwner) {
+            getRefreshData()
+        }
+
+        transactionViewModel.transactionChangedEvent.observe(viewLifecycleOwner) {
+            Log.d("COY HistoryFragment", "Transaction changed event received.")
+            getRefreshData()
+        }
+
         val layoutManager = LinearLayoutManager(requireContext())
         binding.rvHistory.layoutManager = layoutManager
 
@@ -75,31 +99,30 @@ class HistoryFragment : Fragment() {
         refreshData()
     }
 
-    private fun showNotFound(isEmptyTransac: Boolean = false) {
-        binding.tvNotFoundTransac.visibility = if (isEmptyTransac) View.VISIBLE else View.GONE
-    }
-
-    private fun refreshData() {
-        binding.swipeRefresh.setOnRefreshListener {
-            viewModel.apply {
-                getHistory()
-                getTotalIncome()
-                getTotalExpense()
-                getTotalBalance()
-            }
-            binding.swipeRefresh.isRefreshing = false
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-
+    private fun getRefreshData() {
         viewModel.apply {
             getHistory()
             getTotalIncome()
             getTotalExpense()
             getTotalBalance()
         }
+    }
+
+    private fun showNotFound(isEmptyTransac: Boolean = false) {
+        binding.tvNotFoundTransac.visibility = if (isEmptyTransac) View.VISIBLE else View.GONE
+        binding.rvHistory.visibility = if (isEmptyTransac) View.GONE else View.VISIBLE
+    }
+
+    private fun refreshData() {
+        binding.swipeRefresh.setOnRefreshListener {
+            getRefreshData()
+            binding.swipeRefresh.isRefreshing = false
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getRefreshData()
     }
 
     private fun setBalance() {
@@ -127,7 +150,7 @@ class HistoryFragment : Fragment() {
     }
 
     private fun setHistory(historyItem: List<HistoryItem?>) {
-        val adapter = HistoryAdapter()
+        val adapter = HistoryAdapter(viewModel, requireContext())
         adapter.submitList(historyItem)
         binding.rvHistory.adapter = adapter
 

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.savings.detail.EditDetailActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint_layout_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/blue"
+        android:paddingHorizontal="24dp"
+        android:paddingTop="48dp"
+        android:paddingBottom="69dp">
+
+        <TextView
+            android:id="@+id/title_page"
+            style="@style/tv_h3_18"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/edit_saving"
+            android:textColor="@color/white"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <ImageView
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_back"
+            app:tint="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/title_page"
+            app:layout_constraintBottom_toBottomOf="@id/title_page"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_anchor="@id/constraint_layout_top"
+        app:layout_anchorGravity="bottom"
+        android:background="@drawable/bg_rounded_top_1side_20"
+        android:layout_marginTop="120dp"
+        android:paddingHorizontal="24dp">
+
+        <TextView
+            android:id="@+id/tv_title_desc"
+            style="@style/tv_h5_14"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:layout_marginBottom="8dp"
+            android:text="Your saving goal"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/ed_desc_layout"
+            style="@style/MyTextInputLayout"
+            app:endIconMode="clear_text"
+            app:layout_constraintTop_toBottomOf="@id/tv_title_desc"
+            app:layout_constraintStart_toStartOf="@id/tv_title_desc"
+            app:layout_constraintEnd_toEndOf="@id/tv_title_desc">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/ed_desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/desc_hint"
+                android:inputType="textCapSentences"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/tv_title_balance"
+            style="@style/tv_h5_14"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            android:text="Total target"
+            app:layout_constraintTop_toBottomOf="@id/ed_desc_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/ed_balance_layout"
+            style="@style/MyTextInputLayout"
+            app:layout_constraintTop_toBottomOf="@id/tv_title_balance"
+            app:layout_constraintStart_toStartOf="@id/tv_title_balance"
+            app:layout_constraintEnd_toEndOf="@id/tv_title_balance"
+            app:startIconDrawable="@drawable/resize_icon_rp">
+
+            <id.adiandrea.rupiahedittext.RupiahEditText
+                android:id="@+id/ed_balance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/balance_hint"
+                android:inputType="numberDecimal"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_edit_saving"
+            android:layout_marginTop="48dp"
+            android:text="@string/edit_saving_goal"
+            style="@style/btn_filled_icon"
+            android:textColor="@color/white"
+            app:icon="@drawable/ic_add"
+            app:layout_constraintStart_toStartOf="@id/ed_balance_layout"
+            app:layout_constraintTop_toBottomOf="@id/ed_balance_layout"
+            app:layout_constraintEnd_toEndOf="@id/ed_balance_layout"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

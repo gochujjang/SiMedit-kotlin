@@ -4,9 +4,11 @@ import com.codewithre.simedit.data.remote.response.AddSavingResponse
 import com.codewithre.simedit.data.remote.response.AddTransacResponse
 import com.codewithre.simedit.data.remote.response.AddTransacSavingResponse
 import com.codewithre.simedit.data.remote.response.BalanceResponse
+import com.codewithre.simedit.data.remote.response.DeleteResponse
 import com.codewithre.simedit.data.remote.response.DeleteSavingResponse
 import com.codewithre.simedit.data.remote.response.DetailSavingResponse
 import com.codewithre.simedit.data.remote.response.DropdownSavingResponse
+import com.codewithre.simedit.data.remote.response.EditSavingResponse
 import com.codewithre.simedit.data.remote.response.HistoryResponse
 import com.codewithre.simedit.data.remote.response.InviteResponse
 import com.codewithre.simedit.data.remote.response.ListMemberResponse
@@ -145,4 +147,28 @@ interface ApiService {
     suspend fun deleteSaving(
         @Path("id") id: Int
     ) : DeleteSavingResponse
+
+    @DELETE("portotrans/{id}")
+    suspend fun deleteSavingTrans(
+        @Path("id") id: Int
+    ) : DeleteResponse
+
+    @DELETE("transaction/{id}")
+    suspend fun deleteTransaction(
+        @Path("id") id: Int
+    ) : DeleteResponse
+
+    @DELETE("portofolio/{portoId}/member/{memberId}")
+    suspend fun deleteMember(
+        @Path("portoId") portoId: Int,
+        @Path("memberId") memberId: Int
+    ) : DeleteSavingResponse
+
+    @FormUrlEncoded
+    @POST("portofolio/{id}")
+    suspend fun editSaving(
+        @Path("id") id: Int,
+        @Field("title") title: String,
+        @Field("target") target: Int,
+    ) : EditSavingResponse
 }

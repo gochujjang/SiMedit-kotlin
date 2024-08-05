@@ -16,6 +16,16 @@ class AddTransactionViewModel(private val repository: UserRepository) : ViewMode
     private val _addTransactionResult = MutableLiveData<AddTransacResponse>()
     val addTransactionResult: LiveData<AddTransacResponse> = _addTransactionResult
 
+    private val _transactionUploadStatus = MutableLiveData<Boolean>()
+    val transactionUploadStatus: LiveData<Boolean> = _transactionUploadStatus
+
+    private val _transactionChangedEvent = MutableLiveData<Unit>()
+    val transactionChangedEvent: LiveData<Unit> = _transactionChangedEvent
+
+    fun notifyTransactionChanged() {
+        _transactionChangedEvent.value = Unit
+    }
+
     fun addTransaction(
         status : String,
         nominal : String,
@@ -31,8 +41,11 @@ class AddTransactionViewModel(private val repository: UserRepository) : ViewMode
                     tgl,
                     keterangan)
                 _addTransactionResult.value = response
+                _transactionChangedEvent.value = Unit // Notify that a transaction was added
+                _transactionUploadStatus.value = true // Mark success
             } catch (e: Exception) {
                 e.printStackTrace()
+                _transactionUploadStatus.value = false // Mark success
                 _isLoading.value = false
             } finally {
                 _isLoading.value = false

@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.codewithre.simedit.data.UserRepository
+import com.codewithre.simedit.data.remote.response.DeleteResponse
 import com.codewithre.simedit.data.remote.response.DetailSavingResponse
 import com.codewithre.simedit.data.remote.response.MemberItem
 import com.codewithre.simedit.data.remote.response.SavingDetailItem
@@ -31,6 +32,59 @@ class DetailSavingViewModel(private val repository: UserRepository) : ViewModel(
 
     private val _deleteMessage = MutableLiveData<String?>()
     val deleteMessage: LiveData<String?> = _deleteMessage
+
+    private val _editMessage = MutableLiveData<String?>()
+    val editMessage: LiveData<String?> = _editMessage
+
+    private val _deleteMessageTransaction = MutableLiveData<String?>()
+    val deleteMessageTransaction: LiveData<String?> = _deleteMessageTransaction
+
+
+    fun editSaving(
+        id: Int,
+        title: String,
+        target: Int,
+    ) {
+        _isLoading.value = true
+        viewModelScope.launch {
+            try {
+                val response = repository.editSaving(id, title, target)
+                if (response.success == true) {
+                    _editMessage.value = response.message
+                    getDetailSaving(id)
+                    _isLoading.value = false
+                } else {
+                    _editMessage.value = response.message ?: "An error occurred"
+                }
+            } catch (e: Exception) {
+                _editMessage.value = e.message ?: "An error occurred"
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
+
+    fun deleteSavingTrans(id: Int) {
+        _isLoading.value = true
+        viewModelScope.launch {
+            try {
+                val response = repository.deleteSavingTrans(id)
+                if (response.success == true) {
+                    _deleteMessageTransaction.value = response.message
+                    getDetailSaving(id)
+                    _isLoading.value = false
+                } else {
+                    _deleteMessage.value = response.message ?: "An error occurred"
+                }
+            } catch (e: Exception) {
+                _deleteMessage.value = e.message ?: "An error occurred"
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
+
+
 
     fun deleteSaving(id: Int) {
         _isLoading.value = true

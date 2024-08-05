@@ -49,8 +49,6 @@ class SavingsViewModel(private val repository: UserRepository) : ViewModel() {
 
                     // Calculate the remaining value
                     _remainingTotal.value = totalTargetValue.toLong() - totalSavingsValue.toLong()
-
-                    Log.d("COY REM", "rem: $_remainingTotal")
                 } else {
                     _errorMessage.value = response.message ?: "An error occurred"
                 }

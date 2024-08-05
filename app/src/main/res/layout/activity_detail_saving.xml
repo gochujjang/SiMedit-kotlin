@@ -261,17 +261,41 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/tv_invite"
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_edit_saving"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="55dp"
+                android:text="Edit Saving"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.divider.MaterialDivider
+                android:id="@+id/divider0"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_edit_saving"/>
+
+            <TextView
+                android:id="@+id/tv_invite"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
                 android:text="Invite Friend"
+                android:layout_marginTop="20dp"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/divider0" />
 
             <com.google.android.material.divider.MaterialDivider
                 android:id="@+id/divider1"
@@ -284,8 +308,9 @@
 
             <TextView
                 android:id="@+id/tv_listfriend"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textAlignment="center"
                 android:layout_marginVertical="20dp"
                 android:text="List Friend"
                 android:textColor="@color/black"
@@ -306,9 +331,10 @@
 
             <TextView
                 android:id="@+id/tv_delete_saving"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="20dp"
+                android:textAlignment="center"
                 android:text="Delete Saving"
                 android:textColor="@color/red"
                 android:textSize="18sp"

@@ -1,22 +1,25 @@
 package com.codewithre.simedit.adapter
 
+import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.codewithre.simedit.R
 import com.codewithre.simedit.data.remote.response.HistoryItem
 import com.codewithre.simedit.databinding.ItemTransactionBinding
+import com.codewithre.simedit.ui.history.HistoryViewModel
 import com.codewithre.simedit.utils.formatCurrency
 import com.codewithre.simedit.utils.formatDate
-import java.text.NumberFormat
-import java.util.Locale
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
-class HistoryAdapter : ListAdapter<HistoryItem, HistoryAdapter.MyViewHolder>(DIFF_CALLBACK) {
+class HistoryAdapter(private val viewModel: HistoryViewModel, private val context: Context) : ListAdapter<HistoryItem, HistoryAdapter.MyViewHolder>(DIFF_CALLBACK) {
 
-    class MyViewHolder(private val binding: ItemTransactionBinding) : RecyclerView.ViewHolder(binding.root) {
+    class MyViewHolder(private val binding: ItemTransactionBinding, private val viewModel: HistoryViewModel, private val context: Context) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: HistoryItem) {
             binding.apply {
                 tvTitleTransac.text = item.keterangan
@@ -37,13 +40,31 @@ class HistoryAdapter : ListAdapter<HistoryItem, HistoryAdapter.MyViewHolder>(DIF
                         ivArrow.setColorFilter(ContextCompat.getColor(binding.root.context, R.color.red))
                     }
                 }
+
+                root.setOnClickListener {
+                    val id = item.id
+                    MaterialAlertDialogBuilder(context)
+                        .setTitle("Delete this transaction")
+                        .setMessage("Are you sure you want to delete this transaction?")
+                        .setPositiveButton("Yes") { _, _ ->
+                            if (id != null) {
+                                viewModel.deleteTransaction(id)
+                            }
+
+                        }
+                        .setNegativeButton("No") { dialog, _ ->
+                            dialog.dismiss()
+                        }
+                        .show()
+
+                }
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoryAdapter.MyViewHolder {
         val binding = ItemTransactionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return MyViewHolder(binding)
+        return MyViewHolder(binding, viewModel, context)
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
