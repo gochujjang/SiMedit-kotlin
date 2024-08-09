@@ -7,7 +7,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
@@ -15,8 +14,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.codewithre.simedit.R
 import com.codewithre.simedit.databinding.ActivityAddTransacSavingBinding
 import com.codewithre.simedit.ui.ViewModelFactory
@@ -38,7 +35,6 @@ class AddTransacSavingActivity : AppCompatActivity() {
     private val viewModel: AddTransacSavingViewModel by viewModels<AddTransacSavingViewModel> {
         ViewModelFactory.getInstance(this)
     }
-
     private val viewModelDetail by viewModels<DetailSavingViewModel> {
         ViewModelFactory.getInstance(this)
     }
@@ -88,6 +84,12 @@ class AddTransacSavingActivity : AppCompatActivity() {
             showToast(response.message ?: "Transaction added successfully")
             finish()
         }
+
+        // Observe loading state to enable/disable the button
+        viewModel.isLoading.observe(this) { isLoading ->
+            binding.btnAddTransaction.isEnabled = !isLoading
+            showLoading(isLoading)
+        }
     }
 
     override fun onDestroy() {
@@ -97,46 +99,59 @@ class AddTransacSavingActivity : AppCompatActivity() {
 
     private fun uploadTransaction() {
         val typeTransac = typeChecked
-        val balance = binding.edBalance.value.toInt()
+        val balance = binding.edBalance.value.toString()
         val desc = binding.edDesc.text
         val portoId = id
 
-        if (balance == 0) {
+        binding.btnAddTransaction.isEnabled = false
+
+        if (balance == "0") {
             binding.edBalance.error = "Balance can't be 0, please enter balance amount"
         } else if (desc?.isEmpty() == true) {
             binding.edDesc.error = "Description can't be empty"
+        } else if (currentImageUri == null) {
+            showToast("Please add a transaction proof first")
         } else {
-            Log.d("COY FIELD", "setAddTransaction: $typeTransac balance : $balance desc : $desc porto : $portoId")
             currentImageUri?.let { uri ->
                 val imageFile = uriToFile(uri, this).reduceFileImage()
-                Log.d("Image File", "showImage: ${imageFile.path}")
-                val description = "Ini adalah deksripsi gambar"
+                val description = "Ini adalah deskripsi gambar"
 
                 showLoading(true)
+
                 val requestBody = description.toRequestBody("text/plain".toMediaType())
                 val requestImageFile = imageFile.asRequestBody("image/jpeg".toMediaType())
-                val multipartBody = MultipartBody.Part.createFormData(
-                    "foto",
-                    imageFile.name,
-                    requestImageFile
-                )
+                val multipartBody = MultipartBody.Part.createFormData("foto", imageFile.name, requestImageFile)
                 val status = typeTransac.toRequestBody("text/plain".toMediaType())
-                val nominal = balance.toString().toRequestBody("text/plain".toMediaType())
+                val nominal = balance.toBigIntegerOrNull()?.toString()?.toRequestBody("text/plain".toMediaType())
                 val keterangan = desc.toString().toRequestBody("text/plain".toMediaType())
                 val portomember_id = portoId.toString().toRequestBody("text/plain".toMediaType())
+
                 viewModel.addSavingTransaction(
                     status,
-                    nominal,
+                    nominal ?: "0".toRequestBody("text/plain".toMediaType()),
                     portomember_id,
                     keterangan,
                     requestBody,
-                    multipartBody,
-                    )
-                showToast("Uploading...")
-                showLoading(false)
+                    multipartBody
+                )
+
+                viewModel.errorMessage.observe(this) { errorMessage ->
+                    showToast(errorMessage)
+                    binding.btnAddTransaction.isEnabled = true
+                    showLoading(false)
+                }
+
+                viewModel.transactionUploadStatus.observe(this) { status ->
+                    if (!status) {
+                        showToast("Upload failed!")
+                    }
+                    binding.btnAddTransaction.isEnabled = true
+                    showLoading(false)
+                }
             }
         }
     }
+
 
     private fun startCamera() {
         val intent = Intent(this, CameraActivity::class.java)
@@ -213,7 +228,7 @@ class AddTransacSavingActivity : AppCompatActivity() {
     }
 
     private fun showLoading(isLoading: Boolean) {
-        binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
     companion object {

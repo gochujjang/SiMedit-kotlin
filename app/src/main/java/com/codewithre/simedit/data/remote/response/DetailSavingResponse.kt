@@ -1,6 +1,7 @@
 package com.codewithre.simedit.data.remote.response
 
 import com.google.gson.annotations.SerializedName
+import java.math.BigInteger
 
 data class DetailSavingResponse(
 
@@ -47,7 +48,7 @@ data class TransaksiPortoItem(
 	val foto: String? = null,
 
 	@field:SerializedName("nominal")
-	val nominal: Int? = null,
+	val nominal: BigInteger? = null,
 
 	@field:SerializedName("updated_at")
 	val updatedAt: String? = null,
@@ -92,10 +93,10 @@ data class SavingDetailItem(
 	val title: String? = null,
 
 	@field:SerializedName("terkumpul")
-	val terkumpul: Int? = null,
+	val terkumpul: BigInteger? = null,
 
 	@field:SerializedName("target")
-	val target: Int? = null,
+	val target: BigInteger? = null,
 
 	@field:SerializedName("persentase")
 	val persentase: Int? = null

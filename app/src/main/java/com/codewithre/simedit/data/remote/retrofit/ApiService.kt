@@ -34,6 +34,7 @@ import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.Path
+import java.math.BigInteger
 
 interface ApiService {
     @FormUrlEncoded
@@ -111,7 +112,7 @@ interface ApiService {
     @POST("portofolio")
     suspend fun addSaving(
         @Field("title") title: String,
-        @Field("target") target: Int,
+        @Field("target") target: BigInteger,
     ) : AddSavingResponse
 
     @GET("portofolio/{id}")
@@ -169,6 +170,6 @@ interface ApiService {
     suspend fun editSaving(
         @Path("id") id: Int,
         @Field("title") title: String,
-        @Field("target") target: Int,
+        @Field("target") target: BigInteger,
     ) : EditSavingResponse
 }

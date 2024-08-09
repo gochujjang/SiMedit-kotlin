@@ -31,6 +31,7 @@ import com.codewithre.simedit.utils.formatCurrency
 import com.codewithre.simedit.utils.formatShortCurrency
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import java.math.BigInteger
 
 class DetailSavingActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailSavingBinding
@@ -39,7 +40,7 @@ class DetailSavingActivity : AppCompatActivity() {
     }
     private var id : Int = 0
     private var title: String = ""
-    private var target: Int = 0
+    private var target: BigInteger = 0.toBigInteger()
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
     private var isShortFormat: Boolean = true
 
@@ -76,7 +77,7 @@ class DetailSavingActivity : AppCompatActivity() {
         viewModel.detailSaving.observe(this) {
             if (it != null) {
                 title = it.title.toString()
-                target = it.target ?: 0
+                target = it.target ?: 0.toBigInteger()
                 setDetailData(it)
             }
         }
@@ -90,6 +91,12 @@ class DetailSavingActivity : AppCompatActivity() {
         setMenuBtn()
         refreshData()
         setFormatCurrency()
+
+        binding.dimView.setOnClickListener {
+            if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+            }
+        }
     }
 
     private fun setFormatCurrency() {
@@ -107,29 +114,21 @@ class DetailSavingActivity : AppCompatActivity() {
     private fun toggleFormat() {
         isShortFormat = !isShortFormat
 
-        val totalSavings = viewModel.detailSaving.value?.terkumpul?.toLong() ?: 0L
-        val totalTarget = viewModel.detailSaving.value?.target?.toLong() ?: 0L
-        val remainingBalance = totalTarget - totalSavings
-
-//        fun setMargins(view: View, marginDp: Int) {
-//            val layoutParams = view.layoutParams as ViewGroup.MarginLayoutParams
-//            layoutParams.setMargins(marginDp, marginDp, marginDp, marginDp)
-//            view.layoutParams = layoutParams
-//        }
-
+        val totalSavings = viewModel.detailSaving.value?.terkumpul?.toBigDecimal()
+        val totalTarget = viewModel.detailSaving.value?.target?.toBigDecimal()
+        val remainingBalance = totalTarget!! - totalSavings!!
 
         if (isShortFormat) {
             binding.tvTotalSavingsBalance.textSize = 24f
-            binding.tvTotalSavingsBalance.text = formatShortCurrency(totalSavings)
-//            setMargins(binding.tvTotalSavingsBalance, 20)
+            binding.tvTotalSavingsBalance.text = formatShortCurrency(totalSavings.toLong())
         } else {
             binding.tvTotalSavingsBalance.textSize = 16f
-//            setMargins(binding.tvTotalSavingsBalance, 10)
-            formatCurrency(totalSavings)
+            formatCurrency(totalSavings.toLong())
         }
 
-        binding.tvTotalTargetBalance.text = if (isShortFormat) formatShortCurrency(totalTarget) else formatCurrency(totalTarget)
-        binding.tvRemainingTargetBalance.text = if (isShortFormat) formatShortCurrency(remainingBalance) else formatCurrency(remainingBalance)
+        binding.tvTotalSavingsBalance.text = if (isShortFormat) formatShortCurrency(totalSavings.toLong()) else formatCurrency(totalSavings.toLong())
+        binding.tvTotalTargetBalance.text = if (isShortFormat) formatShortCurrency(totalTarget.toLong()) else formatCurrency(totalTarget.toLong())
+        binding.tvRemainingTargetBalance.text = if (isShortFormat) formatShortCurrency(remainingBalance.toLong()) else formatCurrency(remainingBalance.toLong())
     }
 
     @SuppressLint("InflateParams")
@@ -188,9 +187,9 @@ class DetailSavingActivity : AppCompatActivity() {
             val intent = Intent(this, EditDetailActivity::class.java)
             intent.putExtra(EXTRA_DETAIL_ID, id)
             intent.putExtra(EXTRA_DETAIL_TITLE, title)
-            intent.putExtra(EXTRA_DETAIL_TARGET, target)
-            Log.d("COY DetailSavingActivity", "anjg: $id , $title , $target")
+            intent.putExtra(EXTRA_DETAIL_TARGET, target.toString())
             startActivity(intent)
+            toggleFormat()
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         }
 
@@ -319,8 +318,6 @@ class DetailSavingActivity : AppCompatActivity() {
             }
         }
     }
-
-
 
 //    private fun showLoading(isLoading: Boolean) {
 //        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE

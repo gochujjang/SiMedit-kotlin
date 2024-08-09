@@ -13,6 +13,7 @@ import com.codewithre.simedit.data.remote.response.MemberItem
 import com.codewithre.simedit.data.remote.response.SavingDetailItem
 import com.codewithre.simedit.data.remote.response.TransaksiPortoItem
 import kotlinx.coroutines.launch
+import java.math.BigInteger
 
 class DetailSavingViewModel(private val repository: UserRepository) : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
@@ -43,7 +44,7 @@ class DetailSavingViewModel(private val repository: UserRepository) : ViewModel(
     fun editSaving(
         id: Int,
         title: String,
-        target: Int,
+        target: BigInteger,
     ) {
         _isLoading.value = true
         viewModelScope.launch {
@@ -57,7 +58,8 @@ class DetailSavingViewModel(private val repository: UserRepository) : ViewModel(
                     _editMessage.value = response.message ?: "An error occurred"
                 }
             } catch (e: Exception) {
-                _editMessage.value = e.message ?: "An error occurred"
+                _editMessage.value = "Unable to edit this saving plan"
+                _isLoading.value = false
             } finally {
                 _isLoading.value = false
             }
@@ -117,13 +119,18 @@ class DetailSavingViewModel(private val repository: UserRepository) : ViewModel(
                     _inviteMessage.value = response.message ?: "An error occurred"
                 }
             } catch (e: Exception) {
-                _inviteMessage.value = e.message ?: "An error occurred"
+                if (e.message?.contains("404") == true) {
+                    _inviteMessage.value = "User not found"
+                } else if (e.message?.contains("409") == true) {
+                    _inviteMessage.value = "User is already in this saving plan"
+                } else {
+                    _inviteMessage.value = "Please check the email again"
+                }
             } finally {
                 _isLoading.value = false
             }
         }
     }
-
 
 
     fun getDetailSaving(id: Int) {

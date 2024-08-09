@@ -1,6 +1,7 @@
 package com.codewithre.simedit.data.remote.response
 
 import com.google.gson.annotations.SerializedName
+import java.math.BigInteger
 
 data class HistoryResponse(
 
@@ -20,7 +21,7 @@ data class HistoryResponse(
 data class HistoryItem(
 
 	@field:SerializedName("nominal")
-	val nominal: Int? = null,
+	val nominal: BigInteger? = null,
 
 	@field:SerializedName("keterangan")
 	val keterangan: String? = null,

@@ -1,5 +1,6 @@
 package com.codewithre.simedit.data
 
+import android.util.Log
 import androidx.lifecycle.liveData
 import com.codewithre.simedit.data.database.models.User
 import com.codewithre.simedit.data.pref.UserPreference
@@ -30,6 +31,7 @@ import kotlinx.coroutines.withContext
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.Field
+import java.math.BigInteger
 
 class UserRepository private constructor(
     private val apiService: ApiService,
@@ -170,7 +172,7 @@ class UserRepository private constructor(
 
     suspend fun addSaving(
         title : String,
-        target : Int
+        target : BigInteger
     ) : AddSavingResponse {
         return withContext(Dispatchers.IO) {
             apiService.addSaving(
@@ -183,7 +185,7 @@ class UserRepository private constructor(
     suspend fun editSaving(
         id: Int,
         title : String,
-        target : Int
+        target : BigInteger
     ) : EditSavingResponse {
         return withContext(Dispatchers.IO) {
             apiService.editSaving(

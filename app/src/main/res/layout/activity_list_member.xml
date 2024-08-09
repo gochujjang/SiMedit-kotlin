@@ -62,7 +62,7 @@
                     android:layout_marginTop="36dp"
                     android:layout_marginBottom="8dp"
                     android:layout_marginHorizontal="24dp"
-                    android:text="List member in this saving plan"
+                    android:text="List friends in this saving plan"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"/>

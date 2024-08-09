@@ -8,6 +8,7 @@ import com.codewithre.simedit.data.UserRepository
 import com.codewithre.simedit.data.remote.response.AddSavingResponse
 import com.codewithre.simedit.data.remote.response.AddTransacResponse
 import kotlinx.coroutines.launch
+import java.math.BigInteger
 
 class AddSavingViewModel(private val repository: UserRepository) : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
@@ -24,7 +25,7 @@ class AddSavingViewModel(private val repository: UserRepository) : ViewModel() {
 
     fun addSaving(
         title : String,
-        target : Int,
+        target : BigInteger,
     ) {
         _isLoading.value = true
         viewModelScope.launch {

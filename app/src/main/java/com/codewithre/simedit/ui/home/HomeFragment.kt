@@ -20,6 +20,7 @@ import com.codewithre.simedit.ui.ViewModelFactory
 import com.codewithre.simedit.ui.history.HistoryViewModel
 import com.codewithre.simedit.ui.savings.SavingsViewModel
 import com.codewithre.simedit.utils.formatCurrency
+import com.codewithre.simedit.utils.formatShortCurrency
 
 class HomeFragment : Fragment() {
 
@@ -35,6 +36,7 @@ class HomeFragment : Fragment() {
     private val savingViewModel: SavingsViewModel by viewModels {
         ViewModelFactory.getInstance(requireContext())
     }
+    private var isShortFormat: Boolean = false
 
 
     override fun onCreateView(
@@ -153,10 +155,35 @@ class HomeFragment : Fragment() {
     private fun setBalance() {
         viewModel.totalBalance.observe(viewLifecycleOwner) { totalBalance ->
             if (totalBalance != null) {
-                binding.tvTotalAmount.text = formatCurrency(totalBalance.data?.toLong())
+                if (totalBalance.data!! > limit_balance.toBigInteger()) {
+                    isShortFormat = true
+                    binding.tvTotalAmount.text = formatShortCurrency(totalBalance.data.toLong())
+                } else {
+                    isShortFormat = false
+                    binding.tvTotalAmount.text = formatCurrency(totalBalance.data.toLong())
+                }
+            } else {
+                binding.tvTotalAmount.text = formatCurrency(0)
+            }
+
+            binding.tvTotalAmount.setOnClickListener {
+                if (totalBalance != null) {
+                    isShortFormat = !isShortFormat
+                    if (isShortFormat == true) {
+                        binding.tvTotalAmount.text = formatShortCurrency(totalBalance.data!!.toLong())
+                    } else {
+                        binding.tvTotalAmount.text = formatCurrency(totalBalance.data!!.toLong())
+                    }
+                } else {
+                    isShortFormat = false
+                    binding.tvTotalAmount.text = formatCurrency(0)
+                }
             }
         }
+
         viewModel.getTotalBalance()
+
+
     }
 
     private fun setLatestHistory(listHistory: List<HistoryItem?>) {
@@ -173,5 +200,9 @@ class HomeFragment : Fragment() {
         adapter.submitList(latestSaving)
         binding.rvSavings.adapter = adapter
         showLoading(false)
+    }
+
+    companion object {
+        val limit_balance = 999_999_999
     }
 }

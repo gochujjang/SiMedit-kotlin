@@ -1,6 +1,7 @@
 package com.codewithre.simedit.data.remote.response
 
 import com.google.gson.annotations.SerializedName
+import java.math.BigInteger
 
 data class AddSavingResponse(
 
@@ -35,8 +36,8 @@ data class SavingData(
 	val title: String? = null,
 
 	@field:SerializedName("terkumpul")
-	val terkumpul: Int? = null,
+	val terkumpul: BigInteger? = null,
 
 	@field:SerializedName("target")
-	val target: Int? = null
+	val target: BigInteger? = null
 )

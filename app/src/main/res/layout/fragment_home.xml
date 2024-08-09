@@ -94,7 +94,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="97dp"
                             android:textColor="@color/white"
-                            android:text="@string/total_amount"
+                            android:text="@string/balance_placeholder"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="@id/tv_fullname"
                             app:layout_constraintEnd_toEndOf="@id/tv_fullname"/>

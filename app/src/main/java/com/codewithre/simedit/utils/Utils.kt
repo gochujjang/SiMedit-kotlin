@@ -125,27 +125,62 @@ fun formatCurrency(amount: Long?): String {
     return formattedNominal.replace("Rp", "Rp ")
 }
 
+//fun formatShortCurrency(amount: Long?): String {
+//    if (amount == null) return ""
+//
+//    val suffixes = listOf("", "jt", "M", "T")
+//    val formatter = NumberFormat.getNumberInstance(Locale("in", "ID"))
+//    formatter.minimumFractionDigits = 0
+//    formatter.maximumFractionDigits = 2
+//
+//    val divisor = 1000.0
+//    var index = 0
+//    var amount = amount.toDouble()
+//
+//    // Loop to reduce the amount and find the correct suffix
+//    while (amount >= divisor && index < suffixes.size - 1) {
+//        amount /= divisor
+//        index++
+//    }
+//
+//    val formatted = formatter.format(amount)
+//    return "Rp $formatted ${suffixes[index]}"
+//}
+
 fun formatShortCurrency(amount: Long?): String {
     if (amount == null) return ""
 
-    val suffixes = listOf("", "jt", "M", "B", "T")
-    val formatter = NumberFormat.getCurrencyInstance(Locale("in", "ID"))
-    formatter.minimumFractionDigits = 0
-    formatter.maximumFractionDigits = 2
+    val amountDouble = amount.toDouble()
+    val suffix: String
+    val value: Double
 
-    val divisor = 100000000
-    var index = 0
-    var amount = amount.toDouble()
-
-    while (amount >= divisor && index < suffixes.size - 1) {
-        amount /= divisor
-        amount *= 100
-        index++
+    when {
+        amount >= 1_000_000_000_000 -> {
+            value = amountDouble / 1_000_000_000_000
+            suffix = "T"
+        }
+        amount >= 1_000_000_000 -> {
+            value = amountDouble / 1_000_000_000
+            suffix = "M"
+        }
+        amount >= 1_000_000 -> {
+            value = amountDouble / 1_000_000
+            suffix = "jt"
+        }
+        else -> {
+            value = amountDouble
+            suffix = ""
+        }
     }
 
-    val formatted = formatter.format(amount)
-    return formatted.replace("Rp", "Rp ").replace(",00", "") + suffixes[index]
+    val formatter = NumberFormat.getNumberInstance(Locale("in", "ID"))
+    formatter.minimumFractionDigits = 0
+    formatter.maximumFractionDigits = 2
+    val formattedValue = formatter.format(value)
+
+    return "Rp $formattedValue$suffix"
 }
+
 
 fun formatDateApi(dateString: String?): String {
     return if (dateString != null) {

@@ -10,6 +10,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.codewithre.simedit.R
 import com.codewithre.simedit.databinding.ActivityEditDetailBinding
 import com.codewithre.simedit.ui.ViewModelFactory
+import java.math.BigInteger
 
 class EditDetailActivity : AppCompatActivity() {
 
@@ -20,7 +21,7 @@ class EditDetailActivity : AppCompatActivity() {
 
     private var id : Int = 0
     private var title: String = ""
-    private var target: Int = 0
+    private var target: BigInteger = BigInteger.ZERO
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +31,7 @@ class EditDetailActivity : AppCompatActivity() {
 
         id = intent.getIntExtra(EXTRA_DETAIL_ID, 0)
         title = intent.getStringExtra(EXTRA_DETAIL_TITLE).toString()
-        target = intent.getIntExtra(EXTRA_DETAIL_TARGET, 0)
+        target = intent.getStringExtra(EXTRA_DETAIL_TARGET)?.let { BigInteger(it) } ?: BigInteger.ZERO
 
         viewModel.editMessage.observe(this) {
             if (it == "Saving updated successfully") {
@@ -49,9 +50,9 @@ class EditDetailActivity : AppCompatActivity() {
 
     private fun editSaving() {
         val newTitle = binding.edDesc.text.toString()
-        val newTarget = binding.edBalance.value.toInt()
+        val newTarget = binding.edBalance.value.toBigInteger()
 
-        if (newTarget == 0) {
+        if (newTarget == 0.toBigInteger()) {
             binding.edBalance.error = "Balance can't be 0, please enter balance amount"
         } else if (newTitle.isEmpty()) {
             binding.edDesc.error = "Please enter saving title"

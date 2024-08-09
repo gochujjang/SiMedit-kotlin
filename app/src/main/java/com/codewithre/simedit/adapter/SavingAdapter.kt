@@ -12,6 +12,7 @@ import com.codewithre.simedit.data.remote.response.SavingItem
 import com.codewithre.simedit.databinding.ItemSavingsBinding
 import com.codewithre.simedit.ui.savings.detail.DetailSavingActivity
 import com.codewithre.simedit.utils.formatCurrency
+import com.codewithre.simedit.utils.formatShortCurrency
 
 class SavingAdapter : ListAdapter<SavingItem, SavingAdapter.MyViewHolder>(DIFF_CALLBACK) {
 
@@ -20,7 +21,19 @@ class SavingAdapter : ListAdapter<SavingItem, SavingAdapter.MyViewHolder>(DIFF_C
             binding.apply {
                 tvTitleSaving.text = item.title
                 tvMoneyCollected.text = formatCurrency(item.terkumpul?.toLong())
-                tvTotalCollected.text = formatCurrency(item.target?.toLong())
+
+                if (item.target != null) {
+                    if (item.target > limit_balance.toBigInteger()) {
+                        tvTotalCollected.text = formatShortCurrency(item.target.toLong())
+                    }else {
+                        tvTotalCollected.text = formatCurrency(item.target.toLong())
+                    }
+                } else {
+                    tvTotalCollected.text = formatCurrency(0)
+                }
+
+
+
                 if (item.persentase!! >= 100) {
                     tvProgressSaving.text = binding.root.context.getString(R.string.finished)
                 } else {
@@ -51,6 +64,7 @@ class SavingAdapter : ListAdapter<SavingItem, SavingAdapter.MyViewHolder>(DIFF_C
 
     companion object {
         const val EXTRA_ID = "extra_id"
+        const val limit_balance = 999_999_999_999
 
         val DIFF_CALLBACK = object : DiffUtil.ItemCallback<SavingItem>(){
             override fun areItemsTheSame(oldItem: SavingItem, newItem: SavingItem): Boolean {

@@ -1,6 +1,7 @@
 package com.codewithre.simedit.data.remote.response
 
 import com.google.gson.annotations.SerializedName
+import java.math.BigInteger
 
 data class AddTransacSavingResponse(
 
@@ -23,7 +24,7 @@ data class TransacSavingData(
 	val keterangan: String? = null,
 
 	@field:SerializedName("nominal")
-	val nominal: String? = null,
+	val nominal: BigInteger? = null,
 
 	@field:SerializedName("foto")
 	val foto: String? = null,

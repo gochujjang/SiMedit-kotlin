@@ -53,17 +53,6 @@
             app:layout_anchor="@id/constraint_layout_top"
             app:layout_anchorGravity="bottom">
 
-            <com.google.android.material.progressindicator.LinearProgressIndicator
-                android:id="@+id/progressIndicator"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:indeterminate="true"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-
             <ImageView
                 android:id="@+id/iv_preview"
                 android:layout_width="0dp"
@@ -183,6 +172,18 @@
                 app:layout_constraintStart_toStartOf="@id/tv_title_foto"
                 app:layout_constraintTop_toBottomOf="@id/tv_title_foto" />
 
+            <TextView
+                android:id="@+id/tv_hint_transac_proof"
+                style="@style/tv_body_regular_12"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:textColor="@color/black"
+                android:text="*Transaction proof is required"
+                app:layout_constraintEnd_toEndOf="@id/ed_desc_layout"
+                app:layout_constraintStart_toStartOf="@id/ed_desc_layout"
+                app:layout_constraintTop_toBottomOf="@id/btn_add_photo" />
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_add_transaction"
                 style="@style/btn_filled_icon"
@@ -193,6 +194,17 @@
                 app:layout_constraintEnd_toEndOf="@id/btn_add_photo"
                 app:layout_constraintStart_toStartOf="@id/btn_add_photo"
                 app:layout_constraintTop_toBottomOf="@id/btn_add_photo" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

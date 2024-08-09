@@ -239,9 +239,11 @@
         tools:visibility="gone"/>
     <!-- BottomSheet -->
     <FrameLayout
+        android:clickable="true"
         android:id="@+id/bottomSheet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:focusable="true"
         android:paddingBottom="100dp"
         android:background="@drawable/bg_rounded_top_20"
         android:backgroundTint="@color/white"

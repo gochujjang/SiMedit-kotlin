@@ -37,9 +37,9 @@ class AddSavingActivity : AppCompatActivity() {
         binding.apply {
             btnAddSaving.setOnClickListener {
                 val titleSaving = edDesc.text.toString()
-                val totalTarget = edBalance.value.toInt()
+                val totalTarget = edBalance.value.toBigInteger()
 
-                if (totalTarget == 0) {
+                if (totalTarget == 0.toBigInteger()) {
                     edBalance.error = "Balance can't be 0, please enter balance amount"
                     return@setOnClickListener
                 } else if (titleSaving.isEmpty()) {

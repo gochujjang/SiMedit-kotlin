@@ -1,7 +1,9 @@
 package com.codewithre.simedit.ui.savings.detail
 
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -10,6 +12,9 @@ import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.target.Target
 import com.codewithre.simedit.R
 import com.codewithre.simedit.adapter.DetailSavingAdapter
 import com.codewithre.simedit.databinding.ActivityTransacProofBinding
@@ -74,11 +79,40 @@ class TransacProofActivity : AppCompatActivity() {
 
     private fun showImage() {
         currentImageUri?.let { uri ->
-            val url = uri
-//            val localmode = uri.toString().replace("localhost", "10.0.2.2:8000").toUri()
+            // Show loading indicator
+            binding.progressBar.visibility = View.VISIBLE
+
             Glide.with(this)
                 .load(uri)
+                .listener(object : com.bumptech.glide.request.RequestListener<Drawable> {
+                    override fun onLoadFailed(
+                        e: GlideException?,
+                        model: Any?,
+                        target: Target<Drawable>,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        // Hide loading indicator if the load failed
+                        binding.progressBar.visibility = View.GONE
+                        // Optionally, show a toast or message indicating failure
+                        showToast("Failed to load image")
+                        return false
+                    }
+
+                    override fun onResourceReady(
+                        resource: Drawable,
+                        model: Any,
+                        target: Target<Drawable>?,
+                        dataSource: DataSource,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        // Hide loading indicator when the image is ready
+                        binding.progressBar.visibility = View.GONE
+                        return false
+                    }
+                })
                 .into(binding.ivPreview)
         }
     }
+
 }
+//            val localmode = uri.toString().replace("localhost", "10.0.2.2:8000").toUri()

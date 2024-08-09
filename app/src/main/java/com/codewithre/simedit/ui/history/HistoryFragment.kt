@@ -17,7 +17,9 @@ import com.codewithre.simedit.data.remote.response.HistoryItem
 import com.codewithre.simedit.databinding.FragmentHistoryBinding
 import com.codewithre.simedit.ui.ViewModelFactory
 import com.codewithre.simedit.ui.add.transaction.AddTransactionViewModel
+import com.codewithre.simedit.ui.home.HomeFragment
 import com.codewithre.simedit.utils.formatCurrency
+import com.codewithre.simedit.utils.formatShortCurrency
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -36,6 +38,11 @@ class HistoryFragment : Fragment() {
 
 
     private var fullHistoryList: List<HistoryItem?> = listOf()
+
+    private var isShortFormat: Boolean = false
+    private var isIncomeShortFormat: Boolean = true
+    private var isExpenseShortFormat: Boolean = true
+
 
 
     override fun onCreateView(
@@ -132,21 +139,67 @@ class HistoryFragment : Fragment() {
                     binding.tvTotalBalance.text = formatCurrency(totalBalance.data?.toLong())
                 }
             }
+
             totalIncome.observe(viewLifecycleOwner) { totalIncome ->
                 if (totalIncome != null) {
-                    binding.tvIncomeBalance.text = formatCurrency(totalIncome.data?.toLong())
+                    updateIncomeBalance(totalIncome.data!!.toLong(), isIncomeShortFormat)
+                } else {
+                    binding.tvIncomeBalance.text = formatCurrency(0)
                 }
             }
+
             totalExpense.observe(viewLifecycleOwner) { totalExpense ->
                 if (totalExpense != null) {
-                    binding.tvExpenseBalance.text = formatCurrency(totalExpense.data?.toLong())
+                    updateExpenseBalance(totalExpense.data!!.toLong(), isExpenseShortFormat)
+                } else {
+                    binding.tvExpenseBalance.text = formatCurrency(0)
                 }
+            }
+
+            binding.tvIncomeBalance.setOnClickListener {
+                toggleIncomeBalanceFormat()
+            }
+
+            binding.tvExpenseBalance.setOnClickListener {
+                toggleExpenseBalanceFormat()
             }
 
             getTotalBalance()
             getTotalIncome()
             getTotalExpense()
         }
+    }
+
+    private fun toggleIncomeBalanceFormat() {
+        isIncomeShortFormat = !isIncomeShortFormat
+
+        val totalIncomeValue = viewModel.totalIncome.value?.data?.toLong() ?: 0L
+        updateIncomeBalance(totalIncomeValue, isIncomeShortFormat)
+
+        // Ensure the expense balance is in short format
+        val totalExpenseValue = viewModel.totalExpense.value?.data?.toLong() ?: 0L
+        updateExpenseBalance(totalExpenseValue, true)
+        isExpenseShortFormat = true
+    }
+
+    private fun toggleExpenseBalanceFormat() {
+        isExpenseShortFormat = !isExpenseShortFormat
+
+        val totalExpenseValue = viewModel.totalExpense.value?.data?.toLong() ?: 0L
+        updateExpenseBalance(totalExpenseValue, isExpenseShortFormat)
+
+        // Ensure the income balance is in short format
+        val totalIncomeValue = viewModel.totalIncome.value?.data?.toLong() ?: 0L
+        updateIncomeBalance(totalIncomeValue, true)
+        isIncomeShortFormat = true
+    }
+
+    private fun updateIncomeBalance(amount: Long, isShort: Boolean) {
+        binding.tvIncomeBalance.text = if (isShort) formatShortCurrency(amount) else formatCurrency(amount)
+    }
+
+    private fun updateExpenseBalance(amount: Long, isShort: Boolean) {
+        binding.tvExpenseBalance.text = if (isShort) formatShortCurrency(amount) else formatCurrency(amount)
     }
 
     private fun setHistory(historyItem: List<HistoryItem?>) {
@@ -175,5 +228,9 @@ class HistoryFragment : Fragment() {
         // Return current month in the same format as your data's date format
         val sdf = SimpleDateFormat("yyyy-MM", Locale.getDefault())
         return sdf.format(Date())
+    }
+
+    companion object {
+        val limit_balance = 999_999_999
     }
 }
